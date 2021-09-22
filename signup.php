@@ -14,7 +14,6 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="font-awesome-4.7.0\font-awesome-4.7.0\css/css/font-awesome.min.css">
-
   <!-- Tempusdominus Bootstrap 4 -->
   <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- iCheck -->
@@ -22,10 +21,8 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
 </head>
-
 <body class="hold-transition register-page">
     <!-- <div class=" col-md-3 container">
-
    
     </div> -->
 <div class=" row container">
@@ -37,7 +34,6 @@
     </div>
     <div class="card-body">
       <p class="login-box-msg">Register as a new student</p>
-
       <form action="../../index.html" method="post" enctype="multipart/form-data">
       <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Registration Number" name="regNo"  required>
@@ -180,7 +176,6 @@
           <!-- /.col -->
         </div>
       </form>
-
       <div class="social-auth-links text-center">
         <a href="#" class="btn btn-block btn-primary">
           <i class="fab fa-facebook mr-2"></i>
@@ -191,7 +186,6 @@
           Sign up using Google+
         </a>
       </div>
-
       <a href="signin.php" class="text-center">I am Already A student</a>
     </div>
     <!-- /.form-box -->
@@ -210,7 +204,6 @@
     <h3 >Welcome To Maseno University Student Portal</h3>
       <div class="carousel-item active">
       <img src="img/class.png" alt="" style="width: 700px; height: 100%;">
-
         <div class="container">
           <div class="carousel-caption text-start">
             <h1>Quality Education.</h1>
