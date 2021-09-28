@@ -1,0 +1,48 @@
+1.stud_profile
+
+CREATE TABLE `stud_admissions`.`stud_profile` ( `id` INT NOT NULL AUTO_INCREMENT , `adm_no` VARCHAR(100) NOT NULL , `surname` VARCHAR(100) NOT NULL , `other_names` VARCHAR(100) NOT NULL , `email` VARCHAR(100) NOT NULL , `age` INT NOT NULL , `gender` VARCHAR(20) NOT NULL , `password` VARCHAR(20) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+2.docs_collected
+CREATE TABLE `stud_admissions`.`docs_collected` ( `id` INT NOT NULL AUTO_INCREMENT , `adm_no` VARCHAR(100) NOT NULL , `name` VARCHAR(200) NOT NULL , `adm_letter` VARCHAR(200) NOT NULL , `kcse_certificate` VARCHAR(200) NOT NULL , `id_birth_cert` VARCHAR(200) NOT NULL , `status` VARCHAR(200) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `docs_collected` ADD `date_submitted` DATE NOT NULL AFTER `status`;
+
+3.stud_personal_details
+CREATE TABLE `stud_admissions`.`stud_personal_details` ( `id` INT NOT NULL AUTO_INCREMENT , `stud_photo` VARCHAR(100) NOT NULL , `adm_no` VARCHAR(20) NOT NULL , `surname` VARCHAR(20) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `stud_personal_details` ADD `other_names` VARCHAR(20) NOT NULL AFTER `surname`, ADD `school` VARCHAR(100) NOT NULL AFTER `other_names`, ADD `program` VARCHAR(100) NOT NULL AFTER `school`, ADD `dob` DATE NOT NULL AFTER `program`, ADD `gender` VARCHAR(20) NOT NULL AFTER `dob`;
+
+ALTER TABLE `stud_personal_details` ADD `marital_staus` VARCHAR(20) NOT NULL AFTER `gender`, ADD `spouse_name` VARCHAR(20) NOT NULL AFTER `marital_staus`, ADD `spouse_address` VARCHAR(20) NOT NULL AFTER `spouse_name`, ADD `village` VARCHAR(20) NOT NULL AFTER `spouse_address`, ADD `location` VARCHAR(20) NOT NULL AFTER `village`, ADD `county` VARCHAR(20) NOT NULL AFTER `location`, ADD `name_chief` VARCHAR(20) NOT NULL AFTER `county`, ADD `district` VARCHAR(20) NOT NULL AFTER `name_chief`, ADD `police_station` VARCHAR(20) NOT NULL AFTER `district`, ADD `nationality` VARCHAR(20) NOT NULL AFTER `police_station`;
+
+ALTER TABLE `stud_personal_details` ADD `religion` VARCHAR(20) NOT NULL AFTER `nationality`, ADD `corr_address` VARCHAR(20) NOT NULL AFTER `religion`, ADD `tel` INT(20) NOT NULL AFTER `corr_address`, ADD `fax` VARCHAR(20) NOT NULL AFTER `tel`, ADD `email` VARCHAR(20) NOT NULL AFTER `fax`, ADD `mother_name` VARCHAR(20) NOT NULL AFTER `email`, ADD `mother_alive` VARCHAR(20) NOT NULL AFTER `mother_name`, ADD `father_name` VARCHAR(20) NOT NULL AFTER `mother_alive`, ADD `father_alive` VARCHAR(20) NOT NULL AFTER `father_name`, ADD `guardian_name` VARCHAR(20) NOT NULL AFTER `father_alive`;
+
+
+ALTER TABLE `stud_personal_details` ADD `mother_occ` VARCHAR(20) NOT NULL AFTER `guardian_name`, ADD `father_occ` TEXT NOT NULL AFTER `mother_occ`, ADD `guardian_occ` VARCHAR(20) NOT NULL AFTER `father_occ`, ADD `sibling_name` VARCHAR(20) NOT NULL AFTER `guardian_occ`, ADD `sibling_address` VARCHAR(20) NOT NULL AFTER `sibling_name`, ADD `emerg1_name` VARCHAR(20) NOT NULL AFTER `sibling_address`, ADD `emeg1_relationship` VARCHAR(20) NOT NULL AFTER `emerg1_name`, ADD `emeg1_address` VARCHAR(20) NOT NULL AFTER `emeg1_relationship`, ADD `emerg1_tel` INT NOT NULL AFTER `emeg1_address`, ADD `emerg2_name` VARCHAR(20) NOT NULL AFTER `emerg1_tel`;
+
+ALTER TABLE `stud_personal_details` ADD `emerg2_relationship` VARCHAR(20) NOT NULL AFTER `emerg2_name`, ADD `emerg2_address` VARCHAR(20) NOT NULL AFTER `emerg2_relationship`, ADD `emerg2_tel` INT NOT NULL AFTER `emerg2_address`, ADD `last_sch_name` VARCHAR(20) NOT NULL AFTER `emerg2_tel`, ADD `last_sch_address` VARCHAR(20) NOT NULL AFTER `last_sch_name`, ADD `sub1` VARCHAR(20) NOT NULL AFTER `last_sch_address`, ADD `sub1_grade` VARCHAR(20) NOT NULL AFTER `sub1`, ADD `sub2` VARCHAR(20) NOT NULL AFTER `sub1_grade`, ADD `sub2_grade` VARCHAR(20) NOT NULL AFTER `sub2`, ADD `sub3` VARCHAR(20) NOT NULL AFTER `sub2_grade`;
+
+ALTER TABLE `stud_personal_details` ADD `sub3_grade` VARCHAR(20) NOT NULL AFTER `sub3`, ADD `sub4` VARCHAR(20) NOT NULL AFTER `sub3_grade`, ADD `sub4_grade` VARCHAR(20) NOT NULL AFTER `sub4`, ADD `sub5` VARCHAR(20) NOT NULL AFTER `sub4_grade`, ADD `sub5_grade` VARCHAR(20) NOT NULL AFTER `sub5`, ADD `sub6` VARCHAR(20) NOT NULL AFTER `sub5_grade`, ADD `sub6_grade` VARCHAR(20) NOT NULL AFTER `sub6`, ADD `sub7` VARCHAR(20) NOT NULL AFTER `sub6_grade`, ADD `sub7_grade` VARCHAR(20) NOT NULL AFTER `sub7`, ADD `physical_impairment` VARCHAR(20) NOT NULL AFTER `sub7_grade`;
+
+ALTER TABLE `stud_personal_details` ADD `other_info` VARCHAR(100) NOT NULL AFTER `physical_impairment`, ADD `date_submitted` DATE NOT NULL AFTER `other_info`;
+
+
+4.nominal roll
+
+CREATE TABLE `stud_admissions`.`nominal-roll` ( `id` INT NOT NULL AUTO_INCREMENT , `adm_no` VARCHAR(20) NOT NULL , `name` VARCHAR(20) NOT NULL , `fees_file` VARCHAR(20) NOT NULL , `fees_total` VARCHAR(20) NOT NULL , `hostel` VARCHAR(20) NOT NULL , `status` VARCHAR(20) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+
+5.movement form
+
+CREATE TABLE `stud_admissions`.`movement` ( `id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(20) NOT NULL , `adm_no` VARCHAR(20) NOT NULL , `year` INT NOT NULL , `sem` VARCHAR(20) NOT NULL , `date_reported` DATE NOT NULL , `placement` VARCHAR(20) NOT NULL , `course` VARCHAR(20) NOT NULL , `eligibility` VARCHAR(20) NOT NULL , `finance_status` VARCHAR(20) NOT NULL , `fees_amount` VARCHAR(20) NOT NULL , `hostel_residence` VARCHAR(20) NOT NULL , `hostel_name` VARCHAR(20) NOT NULL , `hostel_room_no` VARCHAR(20) NOT NULL , `officer_name` VARCHAR(20) NOT NULL , `officer_date` DATE NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+6.temporary id
+
+CREATE TABLE `stud_admissions`.`temp_id` ( `id` INT NOT NULL , `name` VARCHAR(20) NOT NULL , `adm_no` VARCHAR(20) NOT NULL , `gender` VARCHAR(20) NOT NULL , `school` VARCHAR(20) NOT NULL , `course` VARCHAR(20) NOT NULL , `department` VARCHAR(20) NOT NULL , `date_submitted` DATE NOT NULL ) ENGINE = InnoDB;
+
+ALTER TABLE `temp_id` ADD `stud_photo` VARCHAR(20) NOT NULL AFTER `department`;
+
+7.admin_profile
+
+CREATE TABLE `stud_admissions`.`admin_profile` ( `id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(20) NOT NULL , `school` VARCHAR(100) NOT NULL , `dep_id` VARCHAR(20) NOT NULL , `dep_name` VARCHAR(20) NOT NULL , `role` VARCHAR(20) NOT NULL , `password` VARCHAR(20) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;

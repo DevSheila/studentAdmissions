@@ -1,0 +1,301 @@
+//>>>CCS/00215/019<<<
+//JAVA 2 Assignment
+//Thursday July 1st 2021
+//A.SHOP CATALOGUE CLASS
+import java.sql.*;
+import java.util.ArrayList;
+
+public class ShopCatalogue {
+    private int id;
+    private String name;
+    private int price;
+
+    static final String DB_URL ="jdbc:mysql://localhost/shopcatalogue";
+    static final String USER = "postgres";
+    static final String PASS = null;
+    Connection conn = null;
+    Statement stmt = null;
+    PreparedStatement pstmt = null;
+
+    public ShopCatalogue(String name, int price) {
+
+        this.name = name;
+        this.price = price;
+    }
+    public ShopCatalogue() {
+
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+
+
+    public void displayAll() {
+        try {
+
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+            stmt = conn.createStatement();
+            String sql;
+
+            sql = "SELECT * FROM items";
+            ResultSet rs = stmt.executeQuery(sql);
+
+
+            while (rs.next()) {
+                //Retrieve by column name
+                this.id = rs.getInt("id");
+                this.name = rs.getString("name");
+                this.price = rs.getInt("price");
+
+
+                //Display values
+                System.out.print("ID: " + this.id);
+                System.out.print(", Name: " + this.name);
+                System.out.println(", Price: " + this.price);
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+            }// nothing we can do
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+    }
+
+    public Integer purchase(ArrayList<Integer> purchaseItemIds) {
+        int total =0;
+
+            try {
+
+                conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+                for(Integer entryId : purchaseItemIds) {
+                    pstmt = conn.prepareStatement("SELECT * FROM items WHERE id = ?");
+                    pstmt.setInt(1, entryId);
+
+
+                    ResultSet rs = pstmt.executeQuery();
+
+
+                    while (rs.next()) {
+                        this.id = rs.getInt("id");
+                        this.name = rs.getString("name");
+                        this.price = rs.getInt("price");
+
+
+                        System.out.print("ID: " + this.id);
+                        System.out.print(", Name: " + this.name);
+                        System.out.println(", Price: " + this.price);
+                        total += this.price;
+
+                    }
+                }
+
+
+//                rs.close();
+                pstmt.close();
+                conn.close();
+
+            } catch (SQLException se) {
+                se.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (pstmt != null)
+                        pstmt.close();
+                } catch (SQLException se2) {
+                }
+                try {
+                    if (conn != null)
+                        conn.close();
+                } catch (SQLException se) {
+                    se.printStackTrace();
+                }
+            }
+
+        return  total;
+    }
+
+    public void addItemToCatalogue() {
+        try {
+
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            pstmt = conn.prepareStatement("INSERT INTO items(name,price) VALUES(?,?)");
+            pstmt.setString(1,this.name);
+            pstmt.setInt(2, this.price);
+
+            int i = pstmt.executeUpdate();
+            System.out.println("Record: "+ i);
+
+
+
+            pstmt.close();
+            conn.close();
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+    }
+
+
+
+}
+
+
+//B.IMPLEMENTATION CLASS
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class App {
+
+
+
+
+
+    public static void main(String[] args) {
+        ShopCatalogue item1 = new ShopCatalogue("teaLeaves",200);
+        ShopCatalogue item2 = new ShopCatalogue("soda",80);
+        ShopCatalogue item6 = new ShopCatalogue("bread",55);
+        ShopCatalogue item3 = new ShopCatalogue("choclate",250);
+        ShopCatalogue item4 = new ShopCatalogue("earBuds",75);
+        ShopCatalogue item5 = new ShopCatalogue("milk",55);
+
+        item1.addItemToCatalogue();
+        item2.addItemToCatalogue();
+        item3.addItemToCatalogue();
+        item4.addItemToCatalogue();
+        item5.addItemToCatalogue();
+        item6.addItemToCatalogue();
+
+
+        System.out.println("Welcome To Our Shop");
+        System.out.println(">>>>>>>>>>>>>>>>>>Shop's Catalogue Items<<<<<<<<<<<<");
+        ShopCatalogue currentShopCatalogue = new ShopCatalogue();
+        currentShopCatalogue.displayAll();
+        boolean runningProgram = true;
+
+    while(runningProgram){
+        System.out.println("Please Choose Operation:");
+        System.out.println("A. Add Items");
+        System.out.println("B. Purchase Items");
+        System.out.println("D. Exit");
+        Scanner scan = new Scanner(System.in);
+
+        String operation = scan.next();
+        if((operation.equals("A") || operation.equals("a")) ){
+            System.out.println(">>>>>>>>>>>>>>>>>>Adding New Item<<<<<<<<<<<<");
+            System.out.print("Enter Item Name:");
+            String itemName= scan.next();
+            System.out.print("Enter Item Price:");
+            int itemPrice= scan.nextInt();
+           ShopCatalogue newStoreItem = new ShopCatalogue(itemName,itemPrice);
+           newStoreItem.addItemToCatalogue();
+           newStoreItem.displayAll();
+            System.out.println(">>>>>>>>>>>Item Added :)<<<<<<<< ");
+
+
+        }else if((operation.equals("B") || operation.equals("b"))){
+            System.out.println(">>>>>>>>>>>>>>>>>>Enter Id Of Items To Purchase<<<<<<<<<<<<");
+
+
+
+            System.out.print("Enter Item ID / Press C To Checkout:");
+
+            ArrayList<Integer> purchaseItemIds = new ArrayList<>();
+            int entryId= scan.nextInt();
+            purchaseItemIds.add(entryId);
+
+            Boolean addingItems = true;
+            System.out.print("Enter Item ID / Press C To Checkout:");
+
+
+            while(addingItems && scan.hasNextInt()){
+
+                System.out.print("Enter Item ID / Press C To Checkout:");
+
+                Integer newEntryId= scan.nextInt();
+
+                purchaseItemIds.add(newEntryId);
+
+            }
+            System.out.println("Calculting total price....");
+
+            System.out.println("Total Price: "+currentShopCatalogue.purchase(purchaseItemIds) ) ;
+            System.out.println(">>>>>>>>>>>Thank You For Shopping With Us :)<<<<<<<< ");
+
+        }else if((operation.equals("D") || operation.equals("d"))){
+            System.out.println(">>>>>>>>>>>>>>>Successful Exit<<<<<<<<<<<<<<");
+            runningProgram = false;
+        } else{
+
+            System.out.println("Please Enter A Valid operation letter.");
+        }
+
+
+
+
+
+
+
+        }
+    }
+}
+
+
+
+

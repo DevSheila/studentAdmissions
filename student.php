@@ -1,3 +1,27 @@
+<?php
+session_start();
+include("config.php");
+
+if(isset($_SESSION['admissionNumber'])){
+  $studId = $_SESSION['stud_id'];
+
+  $adm_no = $_SESSION['admissionNumber'];
+  $surname = $_SESSION['surname'];
+  $other_name = $_SESSION['other_name'];
+  $age = $_SESSION['age'];
+  $course = $_SESSION['course'];
+  $phone = $_SESSION['phone'];
+  $DOB = $_SESSION['DOB'];
+  $image = $_SESSION['image'] ;
+  $gender = $_SESSION['gender'];
+  $surname = $_SESSION['surname'];
+  $stud_status =  $_SESSION['status'];
+
+
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +35,7 @@
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="print.css" media="print"/>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -22,7 +47,7 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
+      <!-- <li class="nav-item d-none d-sm-inline-block">
         <a href="index3.html" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
@@ -39,7 +64,7 @@
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
-      </li>
+      </li> -->
     </ul>
 
     <!-- Right navbar links -->
@@ -119,7 +144,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
-      <img src="dist/img/Maseno-University-Logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <img src="dist/img/Maseno-University-Logo.png" alt="Maseno University Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">Maseno University</span>
     </a>
 
@@ -133,7 +158,7 @@
         </div>
         <div class="info">
           <!-- username -->
-          <a href="#" class="d-block">Username</a>
+          <a href="#" class="d-block"><?php echo "$adm_no"?></a>
         </div>
       </div>
 
@@ -181,8 +206,8 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Simple Link
-                <span class="right badge badge-danger">New</span>
+                <!-- Simple Link -->
+                <!-- <span class="right badge badge-danger">New</span> -->
               </p>
             </a>
           </li>
@@ -204,8 +229,8 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Logout</a></li>
-              <li class="breadcrumb-item active">Username</li>
+              <li class="breadcrumb-item"><a href="logout.php">Logout</a></li>
+              <li class="breadcrumb-item active"><?php echo $surname.",".$other_name;?></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -229,7 +254,6 @@
     <!-- if the previous is approved then display -->
     <a href="stage2.php"><button class="btn btn-info">Stage II</button></a>
     <a href="stage3.php"><button class="btn btn-info">Stage III</button></a>
-    <a href="stage4.php"><button class="btn btn-info">Stage IV</button></a>
   </div>
   
 
@@ -250,7 +274,7 @@
   <tr>
     <!-- dummy result slip as a link -->
     <th>Provisional Transcript:</th>
-    <td class="bg bg-success">Ready To Download</td>
+    <td class="bg bg-warning">Not Ready To Download</td>
   </tr>
   
 </table>
@@ -261,7 +285,8 @@
             <div class="card">
               <div class="card-header">
                 <center><h5 class="m-0">Personal Details
-                <button type="submit" name="edit" class="btn btn-success">Edit</button></h5></center>
+                <button type="submit" name="edit" class="btn btn-success">Edit</button>
+                <a  class="btn  btn-sm btn-success print-btn" onclick ="window.print();" id="login-btn" >Print</a>
               </div>
               <table style="width:100%;">
   <tr>
@@ -269,24 +294,24 @@
     <td>Information</td>
       </tr>
   <tr>
-    <th>First Name:</th>
-    <td class="bg bg-light">First Name</td>
+    <th>Surname:</th>
+    <td class="bg bg-light"><?php echo $surname;?></td>
   </tr>
   <tr>
-    <th>Second Name:</th>
-    <td class="bg bg-light">Second Name</td>
+    <th>Other Names:</th>
+    <td class="bg bg-light"><?php echo $other_name;?></td>
   </tr>
   <tr>
-    <th>Other Name:</th>
-    <td class="bg bg-light">Other Name</td>
+    <th>Course:</th>
+    <td class="bg bg-light"><?php echo $course;?></td>
   </tr>
-  <tr>
+  <!-- <tr>
     <th>Study Year:</th>
     <td class="bg bg-light">Year</td>
-  </tr>
+  </tr> -->
   <tr>
     <th>Age:</th>
-    <td class="bg bg-light">age</td>
+    <td class="bg bg-light"><?php echo $age;?></td>
   </tr>
 </table>
             </div>
@@ -307,6 +332,11 @@ th, td {
   text-align: left;
 }
 </style> -->
+<?php
+$status ="";
+$query="SELECT status stud_profile"
+
+?>
                 <table style="width:100%;">
   <tr>
     <th>Stage</th>
@@ -314,20 +344,64 @@ th, td {
   </tr>
   <tr>
     <th>Stage I:</th>
-    <td class="bg bg-success">Aprroved</td>
-  </tr>
+    <?php
+            
+            $stage1_status='';
+            $stage1Status = "SELECT * FROM docs_collected WHERE adm_no = '$adm_no'";
+            $stage1Result = mysqli_query($conn,$stage1Status);
+            while( $row = mysqli_fetch_array($stage1Result,MYSQLI_ASSOC)){
+                $stage1_status= $row['status'];
+            }
+              
+            if($stage1_status == ''){
+              $stage1_status= 'no record';
+            }
+            
+    ?>
+     <td  class="bg 
+                            <?php 
+                            if($stage1_status== 'complete'){echo 'bg-primary';}
+                            if($stage1_status == 'approved'){ echo 'bg-success';}
+                            if($stage1_status == 'declined'){ echo 'bg-danger';}
+                            if($stage1_status == 'no record'){ echo 'bg-warning';}
+                            ?>" >
+                             <?php echo $stage1_status;?>
+       </td>
   <tr>
     <th>Stage II:</th>
-    <td class="bg bg-warning">On Review</td>
+
+    <td  class="bg 
+                            <?php 
+                            if($stud_status == 'complete'){echo 'bg-primary';}
+                            if($stud_status == 'approved'){ echo 'bg-success';}
+                            if($stud_status == 'declined'){ echo 'bg-danger';}?>" ><?php echo $stud_status ;?>
+       </td>
   </tr>
-  <tr>
-    <th>Stage III:</th>
-    <td class="bg bg-light">Pending</td>
-  </tr>
-  <tr>
-    <th>Stage IV:</th>
-    <td class="bg bg-light">Pending</td>
-  </tr>
+  <th>Stage III:</th>
+    <?php
+            
+            $stage3_status='';
+            $stage3Status = "SELECT * FROM nominal_roll WHERE adm_no = '$adm_no'";
+            $stage3Result = mysqli_query($conn,$stage3Status);
+            while( $row = mysqli_fetch_array($stage3Result,MYSQLI_ASSOC)){
+                $stage3_status= $row['status'];
+            }
+              
+            if($stage3_status == ''){
+              $stage3_status= 'no record';
+            }
+            
+    ?>
+     <td  class="bg 
+                            <?php 
+                            if($stage3_status== 'complete'){echo 'bg-primary';}
+                            if($stage3_status == 'approved'){ echo 'bg-success';}
+                            if($stage3_status == 'declined'){ echo 'bg-danger';}
+                            if($stage3_status == 'no record'){ echo 'bg-warning';}
+                            ?>" >
+                             <?php echo $stage1_status;?>
+       </td>
+
 </table>
               </div>
             </div>
@@ -358,7 +432,7 @@ th, td {
       Anything you want
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2001-2021 <a href="https://maseno.ac.ke">Maseno University</a>.</strong> All rights reserved.
   </footer>
 </div>
 <!-- ./wrapper -->
