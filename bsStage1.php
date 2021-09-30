@@ -53,7 +53,7 @@ if(isset($_GET['updateApproved'])){
 
 }
 
-//>>>>>>>>>>>>>>>  UPDATE STATUS TO APPROVED<<<<<<<<<<<
+//>>>>>>>>>>>>>>>  UPDATE STATUS TO DECLINED<<<<<<<<<<<
 
 if(isset($_GET['updateDeclined'])){
   $id = $_GET['updateDeclined'];

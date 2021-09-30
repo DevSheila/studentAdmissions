@@ -13,6 +13,7 @@ if(isset($_POST['submit'])){
     $sessionStater=mysqli_fetch_assoc($res);
     $_SESSION['admin_id'] = $sessionStater['dep_id'];
     $_SESSION['admin_name'] = $sessionStater['name'];
+    $_SESSION['image'] = $sessionStater['image'];
   
     
     header("Location:home.php");

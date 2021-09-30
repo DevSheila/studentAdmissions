@@ -15,6 +15,7 @@ if(isset($_SESSION['admissionNumber'])){
   $image = $_SESSION['image'] ;
   $gender = $_SESSION['gender'];
   $surname = $_SESSION['surname'];
+  $email = $_SESSION['email'];
   $stud_status =  $_SESSION['status'];
 
 
@@ -35,7 +36,7 @@ if(isset($_SESSION['admissionNumber'])){
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <link rel="stylesheet" href="print.css" media="print"/>
+  <!-- <link rel="stylesheet" href="print.css" media="print"/> -->
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -286,7 +287,7 @@ if(isset($_SESSION['admissionNumber'])){
               <div class="card-header">
                 <center><h5 class="m-0">Personal Details
                 <button type="submit" name="edit" class="btn btn-success">Edit</button>
-                <a  class="btn  btn-sm btn-success print-btn" onclick ="window.print();" id="login-btn" >Print</a>
+                <a   href = "studDetails.php" class="btn  btn-sm btn-success " >Print</a>
               </div>
               <table style="width:100%;">
   <tr>

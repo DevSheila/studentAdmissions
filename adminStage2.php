@@ -42,7 +42,7 @@ $_SESSION['paginate']='false';
 
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    <img class="animation__shake" src="img/Maseno-University-Logo.png" alt="MasenoLogo" height="60" width="60">
   </div>
 
   <!-- Navbar -->
@@ -72,7 +72,7 @@ $_SESSION['paginate']='false';
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
-      <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <img src="img/Maseno-University-Logo.png" alt="Maseno Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">ADMISSIONS</span>
     </a>
 
@@ -81,7 +81,7 @@ $_SESSION['paginate']='false';
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="img/woman.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
       
@@ -183,54 +183,39 @@ if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
 
     <?php
     include("config.php");
-
-
-
-    
-    // Check connection
-    if (!$conn ||mysqli_connect_errno()) {
-      echo("Connection failed: " . mysqli_connect_error());
-    }else{
-
-      if(isset($_POST['pagination'])){
-        $start = $_POST['pagination'];
-        $_SESSION['pagination']='true';
-      }
-
-      if($_SESSION['paginate'] == 'false'){
-        $adm_no= $_SESSION['admNo'];
-    
-    
+        if(isset($_GET['page_no']) && $_GET['page_no']!=""){
+          $page_no = $_GET['page_no'];
+        }else{
+          $page_no = 1;
+        }
+        //fails with a bigger number???????????
+        $total_records_per_page = 3;
+        $endpoint =($page_no - 1)*$total_records_per_page;
+        $prev_page = $page_no - 1;
+        $nxt_page = $page_no + 1;
+        // $adjacents = "2"; 
         
-        $sql = "SELECT * FROM stud_profile ";
-        $result = mysqli_query($conn,$sql);
-        // $active = $row['active'];
-        
-        $count = mysqli_num_rows($result);
-
-      }else{
         //>>>>>>>>>>>>>>>  PAGINATION RECORD <<<<<<<<<<<
 
-    
+    //get the total number of pages for pagination
 
-          $sql ="SELECT * FROM stud_profile LIMIT 3,$start ";
+          $sql_counter ="SELECT COUNT(*) AS total_records  FROM stud_profile";
 
     
-          $result = mysqli_query($conn,$sql);
+          $result = mysqli_query($conn,$sql_counter);
           // $active = $row['active'];
-          
-          $count = mysqli_num_rows($result);
+          $total_records = mysqli_fetch_array($result);
+          $total_records = $total_records['total_records'];
+          //We need to find the number of pages by dividing the total records by the number of records per page 
+       //ceil() rounds up decimals to nearest integer
+          $page_count = ceil($total_records / $total_records_per_page);
+          $second_last = $page_count - 1;
+          // $count = mysqli_num_rows($result);
 
-        }
-     
-      
-        
-
-        
-      
-        if($count > 0) {
-        // If there's a record of current student
-          ?>
+        //we use our $endpoint as limit
+        $query =" SELECT *  FROM stud_profile LIMIT $endpoint, $total_records_per_page";
+      $countsql = mysqli_query($conn, $query);
+        ?>
          <!-- Main content -->
     <section class="content">
 
@@ -300,7 +285,8 @@ if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
         <tbody>
         <?php
         $serial = 0;
-         while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+        
+         while( $row = mysqli_fetch_array($countsql,MYSQLI_ASSOC)){
            $docId= $row['id']; 
            $surname = $row['surname'];
            $othername = $row['other_name'];
@@ -310,8 +296,6 @@ if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
            $age = $row['age'];
            $gender = $row['gender'];
            $docStatus= $row['status']; 
-
-        
            $adm_no=$row['adm_no'];
           $dob=$row['DOB'];
 
@@ -400,23 +384,37 @@ if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
 
         </tbody>
     </table>
+    <center>
+    <div class="pagination justify-content-end" style='padding: 10px 20px 0px; border-top: dotted 1px #CCC;'>
+<strong>Page <?php echo $page_no." of ".$page_count; ?></strong>
+</div>
+<ul  class="pagination justify-content-end">
+  <?php if($page_no > 1){
+  echo "<li  class='page-item'><a class= `page-link` href='?page_no=1'>First Page</a></li>";
+  }  ?>
+  <li  class="page-item" <?php if($page_no <= 1){echo "class='disabled page-item'";}?>>
+  <a class="page-link" <?php if ($page_no > 1){echo " href='?page_no=$prev_page'";
+  } ?>>Previous</a>
+   </li>
+   <li  class="page-item" <?php if($page_no >=$page_count){
+     echo "class='disabled page-item'";
+   }?>>
+  <a class="page-link " <?php if($page_no < $page_count){
+    echo"href='?page_no=$nxt_page'";
+    }?> >Next</a> 
+  </li>
+  <?php if($page_no < $page_count){
+    echo "<li  class='page-item'><a class= `page-link` href='?page_no=$page_count'>Last>></a></li>";
+  }?>
 
+</ul>
+</center>
     <div class="d-flex justify-content-center m-1">
-         <a  class="btn  btn-sm btn-primary print-btn" onclick ="window.print();" id="login-btn" >Print</a>
+      <!-- personal details download -->
+         <a  class="btn  btn-sm btn-primary print-btn" href="stage2Details.php "id="login-btn" >Print</a>
                                
     </div>
 
-            <nav aria-label="Page navigation example " class ="m-2">
-        <ul class="pagination justify-content-end">
-
-            <li class="page-item"><a class="page-link" href="adminStage1.php?pagination=<?php echo 1 ?>">1</a></li>
-            <li class="page-item"><a class="page-link" href="adminStage1.php?pagination=<?php echo 3?>">2</a></li>
-            <li class="page-item"><a class="page-link" href="adminStage1.php?pagination=<?php echo 6?>">3</a></li>
-            <li class="page-item">
-            <a class="page-link" href="bsStage1.php?pagination=<?php echo 12?>">Next</a>
-            </li>
-        </ul>
-        </nav>
   </div>
   <!-- /.card-body -->
 </div>
@@ -430,11 +428,7 @@ if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
             
 
    
-       <?php
-         
-    
-        }else{
-        ?>
+     
 <!-- Main content -->
 <section class="content">
       <div class="container-fluid">
@@ -493,12 +487,7 @@ if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
   <!-- /.control-sidebar -->
 
 
-        <?php
-        }
      
-    }
-    ?>
-
 
  </div>
 <!-- ./wrapper -->
