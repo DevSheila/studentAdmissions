@@ -193,7 +193,11 @@ $_SESSION['paginate']='false';
           $page_no = 1;
         }
         //fails with a bigger number???????????
+<<<<<<< HEAD
         $total_records_per_page = 3;
+=======
+        $total_records_per_page = 1;
+>>>>>>> be9acfd (conditions for student page display AJAX search)
         $endpoint =($page_no - 1)*$total_records_per_page;
         $prev_page = $page_no - 1;
         $nxt_page = $page_no + 1;
@@ -386,6 +390,7 @@ $_SESSION['paginate']='false';
         </thead>
         <tbody>
          <?php
+<<<<<<< HEAD
         
        // while($row = mysqli_fetch_array($sql)){
          //  $docId= $row['id']; 
@@ -396,6 +401,8 @@ $_SESSION['paginate']='false';
           //$birthCert= $row['id_birth_cert']; 
           //$docStatus= $row['status']; 
           //$docdateSubmitted= $row['date_submitted']; 
+=======
+>>>>>>> be9acfd (conditions for student page display AJAX search)
            
           
          while($row = mysqli_fetch_array($countsql)){

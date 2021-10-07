@@ -233,15 +233,19 @@ if(isset($_GET['updateDeclined'])){
               
       // If result matched $myusername and $mypassword, table row must be 1 row
     
+<<<<<<< HEAD
       
 
 
+=======
+>>>>>>> be9acfd (conditions for student page display AJAX search)
         $_SESSION['id'] = $row['id'];
         $_SESSION['name'] = $row['name'];
         $_SESSION['admNo']=$row['adm_no'];
         $_SESSION['admLetter'] =$row['adm_letter'];
         $_SESSION['birthCert'] =$row['id_birth_cert'];
         $_SESSION['kcseCert'] =$row['kcse_certificate'];
+<<<<<<< HEAD
 
     
       
@@ -275,6 +279,12 @@ if(isset($_GET['updateDeclined'])){
                       //   $birthCert_image_name = $_SESSION['birthCert'];
                       // }
       
+=======
+       if (!$conn ||mysqli_connect_errno()) {
+                     echo("Connection failed: " . mysqli_connect_error());
+                   }else{
+               
+>>>>>>> be9acfd (conditions for student page display AJAX search)
                       $sql= "UPDATE docs_collected SET adm_no='$studentadmNo',name='$studentName',adm_letter='$adm_letter_image_name',kcse_certificate='$kcseCert_image_name',id_birth_cert='$birthCert_image_name',
                       date_submitted='$date'WHERE id = $id";
  
@@ -292,6 +302,7 @@ if(isset($_GET['updateDeclined'])){
                        }
                      }
 
+<<<<<<< HEAD
                     //  echo "heey";
                  
              }else{
@@ -325,6 +336,9 @@ if(isset($_GET['updateDeclined'])){
 
 // }
 
+=======
+      
+>>>>>>> be9acfd (conditions for student page display AJAX search)
 
 
 

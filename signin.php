@@ -1,5 +1,13 @@
 <?php
 session_start();
+<<<<<<< HEAD
+=======
+// Check if the user is already logged in, if yes then redirect to student page
+// if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+//   header("location: student.php");
+//   exit;
+// }
+>>>>>>> be9acfd (conditions for student page display AJAX search)
 include("config.php");
 $adm_no=$password="";
 if(isset($_POST['submit'])){
@@ -9,6 +17,7 @@ if(isset($_POST['submit'])){
   $res = mysqli_query($conn,$query) or die(mysqli_error($conn));
   $row = mysqli_num_rows($res);
    if($row == 1){
+<<<<<<< HEAD
     // $_SESSION['adm_no'] = $adm_no;
     $sessionStater=mysqli_fetch_assoc($res);
     $_SESSION['stud_id'] = $sessionStater['id'];
@@ -30,6 +39,34 @@ if(isset($_POST['submit'])){
     echo "invalid Login Details.";
   }
 }
+=======
+    $sessionStater=mysqli_fetch_assoc($res);
+    
+                            
+    // Store data in session variables
+    $_SESSION["loggedin"] = true;
+    $_SESSION["id"] = $sessionStater['id'];
+     $_SESSION["admissionNumber"] =  $sessionStater['adm_no'];
+     $_SESSION['adm_no'] = $adm_no; 
+     $_SESSION['stud_id'] = $sessionStater['id'];
+     $_SESSION['admissionNumber'] = $sessionStater['adm_no'];
+     $_SESSION['other_name'] = $sessionStater['other_name'];
+   $_SESSION['surname'] = $sessionStater['surname'];
+     $_SESSION['age'] = $sessionStater['age'];
+     $_SESSION['DOB'] = $sessionStater['DOB'];
+     $_SESSION['phone'] = $sessionStater['phone'];
+     $_SESSION['email'] = $sessionStater['email'];
+     $_SESSION['course'] = $sessionStater['course'];
+   $_SESSION['image'] = $sessionStater['image'];
+     $_SESSION['gender'] = $sessionStater['gender'];
+     $_SESSION['status'] = $sessionStater['status'];
+    //redirect to student page
+     header("Location:student.php");
+  }else{
+    echo "invalid Login Details.";
+  }
+ }
+>>>>>>> be9acfd (conditions for student page display AJAX search)
 
 ?><!doctype html>
 <html lang="en">

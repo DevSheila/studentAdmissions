@@ -3,11 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-<<<<<<< HEAD
-  <title>AdminLTE 3 | Dashboard</title>
-=======
   <title>Student Portal </title>
->>>>>>> be9acfd (conditions for student page display AJAX search)
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -42,11 +38,7 @@
 
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
-<<<<<<< HEAD
-    <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-=======
     <img class="animation__shake" src="img/Maseno-University-Logo.png" alt="AdminLTELogo" height="60" width="60">
->>>>>>> be9acfd (conditions for student page display AJAX search)
   </div>
 
   <!-- Navbar -->
@@ -57,11 +49,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-<<<<<<< HEAD
-        <a href="home.php" class="nav-link">Home</a>
-=======
         <a href="student.php" class="nav-link">Home</a>
->>>>>>> be9acfd (conditions for student page display AJAX search)
       </li>
    
     </ul>
@@ -74,11 +62,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
-<<<<<<< HEAD
-      <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-=======
       <img src="img/Maseno-University-Logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
->>>>>>> be9acfd (conditions for student page display AJAX search)
       <span class="brand-text font-weight-light">ADMISSIONS</span>
     </a>
 
@@ -140,20 +124,10 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1 class="m-0">Stage 1</h1>
-<<<<<<< HEAD
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-=======
-          </div>
-       
-          <!-- /.col -->
-          <div class="col-sm-6">
-            
-            <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="student.php">Home</a></li>
->>>>>>> be9acfd (conditions for student page display AJAX search)
               <li class="breadcrumb-item active">Stage 1</li>
             </ol>
           </div><!-- /.col -->
@@ -164,18 +138,11 @@
 
     <?php
     include("config.php");
-<<<<<<< HEAD
-
-    $_SESSION['name']="Russel Osiemo";
-    $_SESSION['admNo']="CCS/00209/019";
-    $_SESSION['admin']="admin";
-=======
     $surname = $_SESSION['surname'];
     $other_name = $_SESSION['other_name'];
     $name=$surname." ".$other_name;
     $adm_no=$_SESSION['admissionNumber'];
     // $_SESSION['admin']=$adm_no;
->>>>>>> be9acfd (conditions for student page display AJAX search)
 
 
     
@@ -185,11 +152,7 @@
     }else{
       
         
-<<<<<<< HEAD
-       $adm_no= $_SESSION['admNo'];
-=======
       $_SESSION['admissionNumber']=$adm_no;
->>>>>>> be9acfd (conditions for student page display AJAX search)
     
     
         
@@ -202,10 +165,7 @@
       
       if($count > 0) {
         // If there's a record of current student
-<<<<<<< HEAD
-=======
         
->>>>>>> be9acfd (conditions for student page display AJAX search)
           ?>
           <div class="container">
             <div class="row">
@@ -222,12 +182,6 @@
            $birthCert= $row['id_birth_cert']; 
            $docStatus= $row['status']; 
            $docdateSubmitted= $row['date_submitted']; 
-<<<<<<< HEAD
-=======
-         }
-        }
-      }
->>>>>>> be9acfd (conditions for student page display AJAX search)
            ?>
            
 
@@ -281,7 +235,6 @@
   
           
               </div>
-<<<<<<< HEAD
               <!-- /.card-body -->
             </div>
           </div>
@@ -297,30 +250,12 @@
     
         }else{
         ?>
-=======
-              <center>
-    <div>
-              <p class="badge-dark">This stage has been approved , 
-                if the documents are not the ones you submitted visit the Administrator or 
-                <a href="tel:+245723383534"><i class="fa fa-phone"> </i> Call Us  &nbsp;+245723383534</a></p>
-            </div>
-    </center>
-              <!-- /.card-body -->
-            </div>
-          </div>
-       
-     
-         </div>
-          </div>
-    
->>>>>>> be9acfd (conditions for student page display AJAX search)
 <!-- Main content -->
 <section class="content">
       <div class="container-fluid">
         <div class="row">
         <div class="col-md-2"></div>
       
-<<<<<<< HEAD
           <div class="col-md-8">
             <!-- jquery validation -->
             <div class="card card-primary">
@@ -329,8 +264,17 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form id="quickForm" method="POST" action="bsStage1.php"  enctype="multipart/form-data">
+              <form id="quickForm" method="POST" action="stage1.php"  enctype="multipart/form-data">
                 <div class="card-body">
+                <div class="form-group">
+                    <label for="profile" >Surname</label>
+                      <input type="text" class="form-control " id="surname" name="surname" disabled selected value="<?php echo $surname;?>"/>
+                  </div>
+                  <div class="form-group">
+                    <label for="profile" >Other Names</label>
+                      <input type="text" class="form-control " id="other_name" name="other_name"disabled selected value="<?php echo $other_name;?>"/>
+                  </div>
+                  
                 <p>Select a document less than 4MB with (.pdf , .txt extension)</p>
                   <div class="form-group">
                     <label for="profile" >ADMISSION LETTER </label>
@@ -350,26 +294,19 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                 </div>
               </form>
             </div>
             <!-- /.card -->
             </div>
       
-=======
-         
->>>>>>> be9acfd (conditions for student page display AJAX search)
             <div class="col-md-2"></div>
           
           </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </section>
-<<<<<<< HEAD
-=======
-  
->>>>>>> be9acfd (conditions for student page display AJAX search)
     <!-- /.content -->
 
   <!-- Control Sidebar -->
@@ -379,16 +316,115 @@
   <!-- /.control-sidebar -->
 
 
-<<<<<<< HEAD
         <?php
         }
      
-    }
+      }
     ?>
+    <?php
+    $birthCert=$kcseCert=$admLetter="";
+    if(isset($_POST['submit'])){
+      $errors= array();
+      $time = time();
+    //use our session to insert names as a concertination of surname and other_name 
+    $surname = $_SESSION['surname'];
+    $other_name = $_SESSION['other_name'];
+    // if we need to separate the names explode the comma
+    $name=$surname.", ".$other_name;
+      //adm letter
+            $adm_letter_name = $_FILES['admLetter']['name'];
+            $adm_letter_size =$_FILES['admLetter']['size'];
+            $adm_letter_tmp =$_FILES['admLetter']['tmp_name'];
+            $adm_letter_type=$_FILES['admLetter']['type'];
+            // $adm_letter_ext=strtolower(end(explode('.',$_FILES['admLetter']['name'])));
+            $adm_letter_image_name = $time."_".$adm_letter_name;
+
+      //kcse cert
+            $kcseCert_name = $_FILES['kcseCert']['name'];
+            $kcseCert_size =$_FILES['kcseCert']['size'];
+            $kcseCert_tmp =$_FILES['kcseCert']['tmp_name'];
+            $kcseCert_type=$_FILES['kcseCert']['type'];
+            // $kcseCert_ext=strtolower(end(explode('.',$_FILES['kcseCert']['name'])));
+            $kcseCert_image_name = $time."_".$kcseCert_name;
+
+      //birth cert
+            $birthCert_name = $_FILES['birthCert']['name'];
+            $birthCert_size =$_FILES['birthCert']['size'];
+            $birthCert_tmp =$_FILES['birthCert']['tmp_name'];
+            $birthCert_type=$_FILES['birthCert']['type'];
+            // $birthCert_ext=strtolower(end(explode('.',$_FILES['birthCert']['name'])));
+            $birthCert_image_name = $time."_".$birthCert_name;
 
 
-=======
->>>>>>> be9acfd (conditions for student page display AJAX search)
+          $time = time();
+          $extensions= array("pdf","txt");
+          //check if image file is of  a valid  extension
+                // if((in_array($adm_letter_ext,$extensions)=== false)  || (in_array($kcseCert_ext,$extensions)=== false) || (in_array($birthCert_ext,$extensions)=== false)){
+                //   $errors[]="extension not allowed, please choose a PDF or txt file.";
+                //   $_SESSION['msg1']="extension not allowed, please choose a PDF or txt file.";
+                // }
+              
+              if(($adm_letter_size > 4097152) || ($birthCert_size > 4097152) || ($kcseCert_size > 4097152)){
+                  $errors[]='File size must be less than or equal to  4 MB';
+                  $_SESSION['msg2']="File size must be less than or equal to  4 MB'.";
+              }
+        
+            if(empty($errors)==true){
+                $image_dir = "studDocuments";
+                //for session
+                $admLetter_session = "$image_dir/$adm_letter_image_name";
+                move_uploaded_file($adm_letter_tmp,"$image_dir/$adm_letter_image_name");
+
+                $kcseCert_session = "$image_dir/$kcseCert_image_name";
+                move_uploaded_file($kcseCert_tmp,"$image_dir/$kcseCert_image_name");
+
+                $birthCert_session = "$image_dir/$birthCert_image_name";
+                move_uploaded_file($birthCert_tmp,"$image_dir/$birthCert_image_name");
+                //.".".$img_ext)
+                // echo "Success";
+                // print_r($new_image_name);
+                $date = date("l jS \of F Y h:i:s A");
+              
+                $_SESSION['image'] = $_FILES["kcseCert"]["name"];
+            
+        
+                          // Check connection
+                  if (!$conn ||mysqli_connect_errno()) {
+                    echo("Connection failed: " . mysqli_connect_error());
+                  }else{
+                    if($_SERVER["REQUEST_METHOD"] == "POST") {
+                      // username and password sent from form 
+                      // $myusername = mysqli_real_escape_string($conn,$_POST['username']);
+                      // $myemail= mysqli_real_escape_string($conn,$_POST['email']);
+                      // $mypassword = mysqli_real_escape_string($conn,$_POST['password']); 
+              //for first time users , declined users will have to try and update  WHERE adm_no= '$adm_no'
+                      $sql ="INSERT INTO docs_collected( adm_no, name, adm_letter, kcse_certificate, id_birth_cert, status, date_submitted) 
+                      VALUES ('$adm_no','$name','$adm_letter_image_name','$kcseCert_image_name','$birthCert_image_name','complete','$date')";
+
+
+                      
+                    
+                        if ($conn->query($sql) === TRUE) {
+                          echo "Wait for Document Verification";
+                          // header("Location: student.php");
+
+                        } else {
+                          echo "Error: " . $sql . "<br>" . $conn->error;
+                        }
+                        
+                        $conn->close();
+                      }
+                    }
+                
+            }else{
+                print_r($errors);
+              
+             }
+
+    }
+    
+
+    ?>
  </div>
 <!-- ./wrapper -->
 

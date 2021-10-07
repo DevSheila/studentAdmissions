@@ -16,7 +16,11 @@ if(isset($_SESSION['admissionNumber'])){
   $gender = $_SESSION['gender'];
   $surname = $_SESSION['surname'];
   $email = $_SESSION['email'];
+<<<<<<< HEAD
   $stud_status =  $_SESSION['status'];
+=======
+  $stage2_statusfinder =  $_SESSION['status'];
+>>>>>>> be9acfd (conditions for student page display AJAX search)
 
 
 }
@@ -48,6 +52,7 @@ if(isset($_SESSION['admissionNumber'])){
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
+<<<<<<< HEAD
       <!-- <li class="nav-item d-none d-sm-inline-block">
         <a href="index3.html" class="nav-link">Home</a>
       </li>
@@ -66,6 +71,9 @@ if(isset($_SESSION['admissionNumber'])){
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
       </li> -->
+=======
+    
+>>>>>>> be9acfd (conditions for student page display AJAX search)
     </ul>
 
     <!-- Right navbar links -->
@@ -145,7 +153,11 @@ if(isset($_SESSION['admissionNumber'])){
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
+<<<<<<< HEAD
       <img src="dist/img/Maseno-University-Logo.png" alt="Maseno University Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+=======
+      <img src="img/Maseno-University-Logo.png" alt="Maseno University Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+>>>>>>> be9acfd (conditions for student page display AJAX search)
       <span class="brand-text font-weight-light">Maseno University</span>
     </a>
 
@@ -226,8 +238,25 @@ if(isset($_SESSION['admissionNumber'])){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
+<<<<<<< HEAD
             <h1 class="m-0">Starter Page</h1>
           </div><!-- /.col -->
+=======
+            <h1 class="m-0">My Portal</h1>
+            <?php
+            $stage1_status= $stage2_status= $stage3_status="";
+            if(($stage1_status || $stage2_status || $stage3_status)!=="Approved"){
+              echo '<div>
+              <p class="badge-danger">This is a Temporary Account. A valid Account will Be given to you upon Registration completion </p>
+            </div>';
+            }else{
+              echo 'welcome ,'.$surname.",".$other_name;
+            }
+            ?>
+            
+          </div><!-- /.col -->
+         
+>>>>>>> be9acfd (conditions for student page display AJAX search)
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="logout.php">Logout</a></li>
@@ -246,14 +275,65 @@ if(isset($_SESSION['admissionNumber'])){
           <div class="col-lg-6">
             <div class="card">
               <div class="card-body">
+<<<<<<< HEAD
                 <h5 class="card-title">Finish Registration</h5>
+=======
+                <h5 class="card-title">Finish Registration(Resubmit Only Declined Or No record Statuses)</h5>
+>>>>>>> be9acfd (conditions for student page display AJAX search)
               <br>
                 
   <div class="mb-3">
     <!-- rename according to files -->
+<<<<<<< HEAD
     <a href="stage1.php"><button class="btn btn-info">Stage I</button></a>
     <!-- if the previous is approved then display -->
     <a href="stage2.php"><button class="btn btn-info">Stage II</button></a>
+=======
+    <?php 
+   $stage1_statusfinder='';
+   $stage1Statusfinder = "SELECT * FROM docs_collected WHERE adm_no = '$adm_no'";
+   $stage1Resultfinder = mysqli_query($conn,$stage1Statusfinder);
+   while( $rowfinder = mysqli_fetch_array($stage1Resultfinder,MYSQLI_ASSOC)){
+       $stage1_statusfinder= $rowfinder['status'];
+   
+    if($stage1_statusfinder === "declined"){
+   echo '<a href="stage1redo.php"><button class="btn btn-info">Stage I</button></a>';
+    }else if($stage1_statusfinder==='complete'){
+      echo '<a href="#"><button class="btn btn-info">Stage I(Pending Review)</button></a>';
+    }else if($stage1_statusfinder===''){
+      echo '<a href="stage1redo.php"><button class="btn btn-danger">Stage I(No Record)</button></a>';
+    }
+    else if($stage1_statusfinder === "approved"  || $stage1_statusfinder === "complete"){
+      echo '<a href="stage1.php"><button class="btn btn-success">Stage I(Done)</button></a>';
+    }
+    }
+  
+  
+    ?>
+    <!-- if the previous is approved then display -->
+    <!-- <a href="stage2.php"><button class="btn btn-info">Stage II</button></a> -->
+    <?php 
+   $stage2_statusfinder='';
+   $stage2Statusfinder = "SELECT * FROM stud_profile WHERE adm_no = '$adm_no'";
+   $stage2Resultfinder = mysqli_query($conn,$stage2Statusfinder);
+   while( $rowfinder2 = mysqli_fetch_array($stage2Resultfinder,MYSQLI_ASSOC)){
+       $stage2_statusfinder= $rowfinder2['status'];
+   
+    if($stage2_statusfinder === "declined"){
+   echo '<a href="stage2redo.php"><button class="btn btn-info">Stage II</button></a>';
+    }else if($stage2_statusfinder==='complete'){
+      echo '<a href="#"><button class="btn btn-info">Stage II(Pending Review)</button></a>';
+    }else if($stage2_statusfinder===''){
+      echo '<a href="stage2redo.php"><button class="btn btn-danger">Stage II(No Record)</button></a>';
+    }
+    else if($stage2_statusfinder === "approved"){
+      echo '<a href="stage2.php"><button class="btn btn-success">Stage II(Done)</button></a>';
+    }
+    }
+  
+  
+    ?>
+>>>>>>> be9acfd (conditions for student page display AJAX search)
     <a href="stage3.php"><button class="btn btn-info">Stage III</button></a>
   </div>
   
@@ -355,15 +435,23 @@ $query="SELECT status stud_profile"
             }
               
             if($stage1_status == ''){
+<<<<<<< HEAD
               $stage1_status= 'no record';
             }
             
+=======
+              $stage1_status= 'no record <button class="btn-dark"><a href="stage1redo.php">Finish Here</a></button>';
+            }
+            
+            
+>>>>>>> be9acfd (conditions for student page display AJAX search)
     ?>
      <td  class="bg 
                             <?php 
                             if($stage1_status== 'complete'){echo 'bg-primary';}
                             if($stage1_status == 'approved'){ echo 'bg-success';}
                             if($stage1_status == 'declined'){ echo 'bg-danger';}
+<<<<<<< HEAD
                             if($stage1_status == 'no record'){ echo 'bg-warning';}
                             ?>" >
                              <?php echo $stage1_status;?>
@@ -376,6 +464,53 @@ $query="SELECT status stud_profile"
                             if($stud_status == 'complete'){echo 'bg-primary';}
                             if($stud_status == 'approved'){ echo 'bg-success';}
                             if($stud_status == 'declined'){ echo 'bg-danger';}?>" ><?php echo $stud_status ;?>
+=======
+                            if($stage1_status == 'no record <button  class="btn btn-dark"><a href="stage1redo.php">Finish Here</a></button>'){ echo 'bg-warning';}
+                            ?>" >
+                             <?php echo $stage1_status;?>
+                           
+  
+
+    <td  class="bg 
+                            <?php 
+                            
+                            if($stage2_statusfinder == 'complete'){echo 'bg-primary';}
+                            if($stage2_statusfinder == 'approved'){ echo 'bg-success';}
+                            if($stage2_statusfinder == 'declined'){ echo 'bg-danger';
+                            }
+                            if($stage2_statusfinder == 'no record <button  class="btn btn-dark"><a href="stage2.php">Finish Here</a></button>'){ echo 'bg-warning';}
+                            ?>" >
+                           
+                            </td>
+                           <th>
+                           <?php if($stage1_status == 'declined'){
+                              echo '<button  class="btn btn-danger"><a href="stage1redo.php">Resubmit  Stage 1 Here</a></button';
+                            }
+                       ?>
+                           </th>
+                              <tr>
+    <th>Stage II:</th>
+    <td class ="bg
+                      <?php 
+                            //Might remove $stdu_status because for changes to be reflected you'd have to logout and signin to have new session (done)
+                           
+                            if($stage2_statusfinder == 'complete'){echo 'bg-primary';}
+                            if($stage2_statusfinder == 'approved'){ echo 'bg-success';}
+                            if($stage2_statusfinder == 'declined <button  class="btn btn-dark"><a href="stage2.php">Resubmit  Here</a></button>'){ echo 'bg-danger';}
+                            if($stage2_statusfinder == 'no record <button  class="btn btn-dark"><a href="stage2.php">Finish Here</a></button>'){ echo 'bg-warning';}
+                            ?>" >
+                            <?php if($stage1_status == 'approved'){
+                              echo $stage2_statusfinder;
+                       ?>
+       
+                            <?php
+                            }else if ($stage1_status != 'approved'){
+                              $stage2_statusfinder = 'pending Review';
+                              echo $stage2_statusfinder;
+                            }
+                            ?>
+                         
+>>>>>>> be9acfd (conditions for student page display AJAX search)
        </td>
   </tr>
   <th>Stage III:</th>
@@ -389,7 +524,11 @@ $query="SELECT status stud_profile"
             }
               
             if($stage3_status == ''){
+<<<<<<< HEAD
               $stage3_status= 'no record';
+=======
+              $stage3_status= 'no record <button  class="btn btn-dark"><a href="stage3.php">Finish Here</a></button>';
+>>>>>>> be9acfd (conditions for student page display AJAX search)
             }
             
     ?>
@@ -397,10 +536,26 @@ $query="SELECT status stud_profile"
                             <?php 
                             if($stage3_status== 'complete'){echo 'bg-primary';}
                             if($stage3_status == 'approved'){ echo 'bg-success';}
+<<<<<<< HEAD
                             if($stage3_status == 'declined'){ echo 'bg-danger';}
                             if($stage3_status == 'no record'){ echo 'bg-warning';}
                             ?>" >
                              <?php echo $stage1_status;?>
+=======
+                            if($stage3_status == 'declined <button  class="btn btn-dark"><a href="stage3.php">Resubmit  Here</a></button>'){ echo 'bg-danger';}
+                            if($stage3_status == 'no record'){ echo 'bg-warning';}
+                            ?>" >
+                             <?php if($stage2_statusfinder == 'approved'){
+                            ?>
+       
+                            <?php
+                            }else if ($stage2_statusfinder != 'approved'){
+                              $stage3_status = 'pending Review';
+                            }
+                            ?>
+                            
+                             <?php echo $stage3_status;?>
+>>>>>>> be9acfd (conditions for student page display AJAX search)
        </td>
 
 </table>
@@ -430,7 +585,11 @@ $query="SELECT status stud_profile"
   <footer class="main-footer">
     <!-- To the right -->
     <div class="float-right d-none d-sm-inline">
+<<<<<<< HEAD
       Anything you want
+=======
+     School Of Computing And Informatics
+>>>>>>> be9acfd (conditions for student page display AJAX search)
     </div>
     <!-- Default to the left -->
     <strong>Copyright &copy; 2001-2021 <a href="https://maseno.ac.ke">Maseno University</a>.</strong> All rights reserved.
