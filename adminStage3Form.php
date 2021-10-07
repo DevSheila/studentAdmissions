@@ -32,12 +32,7 @@
 
   <?php
     session_start();
-    // $update= false;
-    // $name = '';
-    // $admNo='';
-    // $admLetter ='';
-    // $birthCert ='';
-    // $kcseCert ='';
+
 
   ?>
 <div class="wrapper">
@@ -89,13 +84,10 @@
         <h5 style="color:white;"> 
                     <?php
 
-if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
-    $_SESSION['admin_id']=='1234';
-    $_SESSION['admin_name']=='caleb' ;
-}
-                        echo$_SESSION['admin_name']."-";
 
-                       echo $_SESSION['admin_id'] ;
+                      $adm_no = $_SESSION['logged_student_admission'];
+
+                       echo "<p> $adm_no </p>" ;
                       
                     ?>
               </h5>
@@ -206,12 +198,12 @@ if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
                   </div>
                 <div class="form-group">
                     <label for="exampleInputstudentName1">STUDENT NAME</label>
-                    <input type="text" name="studentName" value="<?php echo $_SESSION['name']?>" class="form-control" id="exampleInputstudentName1" placeholder="Student Name">
+                    <input type="text" name="studentName" value="<?php echo $_SESSION['logged_student_name']?>" class="form-control" id="exampleInputstudentName1" placeholder="Student Name" disabled>
                   </div>
          
                   <div class="form-group">
                     <label for="exampleInputadmno1">ADM NO</label>
-                    <input type="text" name="admno" value="<?php echo  $_SESSION['admNo']?>" class="form-control" id="exampleInputadmno1" placeholder="Student admission number">
+                    <input type="text" name="admno" value="<?php echo  $_SESSION['logged_student_admission']?>" class="form-control" id="exampleInputadmno1" placeholder="Student admission number" disabled>
                   </div>
      
 
@@ -244,7 +236,6 @@ if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
 
                   if($_SESSION['update'] == 'true'){
                     ?>
-                    <!-- <a type="submit" class="btn btn-success" name ="update" href="bsStage1.php?update">Update</a> -->
                     <button type="submit" class="btn btn-success" name ="update">Update</button>
 
                   <?php

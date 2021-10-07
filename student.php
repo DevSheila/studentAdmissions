@@ -2,10 +2,14 @@
 session_start();
 include("config.php");
 
+if($_SESSION['logged_student_admission'] == ''){
+  header("Location:signin.php");
+}
+
 if(isset($_SESSION['admissionNumber'])){
   $studId = $_SESSION['stud_id'];
 
-  $adm_no = $_SESSION['admissionNumber'];
+  $adm_no = $_SESSION['logged_student_admission'];
   $surname = $_SESSION['surname'];
   $other_name = $_SESSION['other_name'];
   $age = $_SESSION['age'];
@@ -158,7 +162,8 @@ if(isset($_SESSION['admissionNumber'])){
         </div>
         <div class="info">
           <!-- username -->
-          <a href="#" class="d-block"><?php echo "$adm_no"?></a>
+          <a href="#" class="d-block"><?php echo  $_SESSION['logged_student_name']?></a>
+          <a href="#" class="d-block"><?php echo  $_SESSION['logged_student_admission']?></a>
         </div>
       </div>
 
@@ -230,7 +235,7 @@ if(isset($_SESSION['admissionNumber'])){
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="logout.php">Logout</a></li>
-              <li class="breadcrumb-item active"><?php echo $surname.",".$other_name;?></li>
+              <li class="breadcrumb-item active"><?php echo  $_SESSION['logged_student_name']?></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -282,39 +287,7 @@ if(isset($_SESSION['admissionNumber'])){
           </div>
           <!-- /.col-md-6 -->
           <div class="col-lg-6">
-            <div class="card">
-              <div class="card-header">
-                <center><h5 class="m-0">Personal Details
-                <button type="submit" name="edit" class="btn btn-success">Edit</button>
-                <a  class="btn  btn-sm btn-success print-btn" onclick ="window.print();" id="login-btn" >Print</a>
-              </div>
-              <table style="width:100%;">
-  <tr>
-    <th style="width:40%;"> Detail</th>
-    <td>Information</td>
-      </tr>
-  <tr>
-    <th>Surname:</th>
-    <td class="bg bg-light"><?php echo $surname;?></td>
-  </tr>
-  <tr>
-    <th>Other Names:</th>
-    <td class="bg bg-light"><?php echo $other_name;?></td>
-  </tr>
-  <tr>
-    <th>Course:</th>
-    <td class="bg bg-light"><?php echo $course;?></td>
-  </tr>
-  <!-- <tr>
-    <th>Study Year:</th>
-    <td class="bg bg-light">Year</td>
-  </tr> -->
-  <tr>
-    <th>Age:</th>
-    <td class="bg bg-light"><?php echo $age;?></td>
-  </tr>
-</table>
-            </div>
+        
 
             <div class="card card-primary card-outline">
               <div class="card-header">
@@ -345,8 +318,8 @@ $query="SELECT status stud_profile"
   <tr>
     <th>Stage I:</th>
     <?php
-            
             $stage1_status='';
+            $adm_no = $_SESSION['logged_student_admission'];
             $stage1Status = "SELECT * FROM docs_collected WHERE adm_no = '$adm_no'";
             $stage1Result = mysqli_query($conn,$stage1Status);
             while( $row = mysqli_fetch_array($stage1Result,MYSQLI_ASSOC)){
@@ -369,18 +342,35 @@ $query="SELECT status stud_profile"
        </td>
   <tr>
     <th>Stage II:</th>
-
+    <?php
+            
+            $stage2_status='';
+            $stage2Status = "SELECT * FROM docs_collected WHERE adm_no = '$adm_no'";
+            $stage2Result = mysqli_query($conn,$stage2Status);
+            while( $row = mysqli_fetch_array($stage2Result,MYSQLI_ASSOC)){
+                $stage2_status= $row['status'];
+            }
+              
+            if($stage2_status == ''){
+              $stage2_status= 'no record';
+            }
+            
+    ?>
     <td  class="bg 
                             <?php 
-                            if($stud_status == 'complete'){echo 'bg-primary';}
-                            if($stud_status == 'approved'){ echo 'bg-success';}
-                            if($stud_status == 'declined'){ echo 'bg-danger';}?>" ><?php echo $stud_status ;?>
+                            if($stage2_status == 'complete'){echo 'bg-primary';}
+                            if($stage2_status == 'approved'){ echo 'bg-success';}
+                            if($stage2_status == 'declined'){ echo 'bg-danger';}
+                            if($stage1_status == 'no record'){ echo 'bg-warning';}
+                            ?>" 
+                            ><?php echo $stage2_status ;?>
        </td>
   </tr>
   <th>Stage III:</th>
     <?php
             
             $stage3_status='';
+            $adm_no ='';
             $stage3Status = "SELECT * FROM nominal_roll WHERE adm_no = '$adm_no'";
             $stage3Result = mysqli_query($conn,$stage3Status);
             while( $row = mysqli_fetch_array($stage3Result,MYSQLI_ASSOC)){
@@ -399,7 +389,7 @@ $query="SELECT status stud_profile"
                             if($stage3_status == 'declined'){ echo 'bg-danger';}
                             if($stage3_status == 'no record'){ echo 'bg-warning';}
                             ?>" >
-                             <?php echo $stage1_status;?>
+                             <?php echo $stage3_status;?>
        </td>
 
 </table>

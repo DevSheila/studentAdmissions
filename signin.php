@@ -5,31 +5,55 @@ $adm_no=$password="";
 if(isset($_POST['submit'])){
   $adm_no=$_POST['adm_no'];
   $password=$_POST['password'];
-  $query = "SELECT * FROM stud_profile WHERE adm_no='$adm_no' AND password = '$password'";
-  $res = mysqli_query($conn,$query) or die(mysqli_error($conn));
-  $row = mysqli_num_rows($res);
-   if($row == 1){
-    // $_SESSION['adm_no'] = $adm_no;
-    $sessionStater=mysqli_fetch_assoc($res);
-    $_SESSION['stud_id'] = $sessionStater['id'];
 
-    $_SESSION['admissionNumber'] = $sessionStater['adm_no'];
-    $_SESSION['other_name'] = $sessionStater['other_name'];
-    $_SESSION['surname'] = $sessionStater['surname'];
-    $_SESSION['age'] = $sessionStater['age'];
-    $_SESSION['DOB'] = $sessionStater['DOB'];
-    $_SESSION['phone'] = $sessionStater['phone'];
-    $_SESSION['email'] = $sessionStater['email'];
-    $_SESSION['course'] = $sessionStater['course'];
-    $_SESSION['image'] = $sessionStater['image'];
-    $_SESSION['gender'] = $sessionStater['gender'];
-    $_SESSION['status'] = $sessionStater['status'];
-    //redirect to student page
-    header("Location:student.php");
-  }else{
-    echo "invalid Login Details.";
+
+
+    $query = "SELECT * FROM stud_profile WHERE adm_no='$adm_no' AND password = '$password'";
+    $res = mysqli_query($conn,$query) or die(mysqli_error($conn));
+    $row = mysqli_num_rows($res);
+
+
+
+    if($row == 1){
+      // $_SESSION['adm_no'] = $adm_no;
+      $sessionStater=mysqli_fetch_assoc($res);
+    
+
+      $_SESSION['stud_id'] = $sessionStater['id'];
+      $_SESSION['admissionNumber'] = $sessionStater['adm_no'];
+      $_SESSION['other_name'] = $sessionStater['other_name'];
+      $_SESSION['surname'] = $sessionStater['surname'];
+      $_SESSION['age'] = $sessionStater['age'];
+      $_SESSION['DOB'] = $sessionStater['DOB'];
+      $_SESSION['phone'] = $sessionStater['phone'];
+      $_SESSION['email'] = $sessionStater['email'];
+      $_SESSION['course'] = $sessionStater['course'];
+      $_SESSION['image'] = $sessionStater['image'];
+      $_SESSION['gender'] = $sessionStater['gender'];
+      $_SESSION['status'] = $sessionStater['status'];
+      //redirect to student page
+      print_r($row);
+
+     
+    }else{
+      print_r($row);
+      echo "invalid Login Details.";
+    }
+
+      // login query code block
+
+        $loginQuery = "SELECT * FROM stud_account WHERE adm_no='$adm_no' AND password = '$password'";
+        $loginResult = mysqli_query($conn,$loginQuery) or die(mysqli_error($conn));
+        $loginNumRow = mysqli_num_rows($loginResult);
+        if($loginNumRow  == 1){
+          $loginRow = mysqli_fetch_assoc($loginResult);
+          $_SESSION['logged_student_admission'] = $loginRow ['adm_no'];
+          $_SESSION['logged_student_name'] = $loginRow ['name'];
+          header("Location:student.php");
+        }
+    // end of login query code block
+
   }
-}
 
 ?><!doctype html>
 <html lang="en">

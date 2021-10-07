@@ -206,12 +206,12 @@
                   </div>
                 <div class="form-group">
                     <label for="exampleInputstudentName1">STUDENT NAME</label>
-                    <input type="text" name="studentName" value="<?php echo $_SESSION['name']?>" class="form-control" id="exampleInputstudentName1" placeholder="Student Name">
+                    <input type="text" name="studentName" value="<?php echo $_SESSION['name']?>" class="form-control" id="exampleInputstudentName1" placeholder="Student Name"disabled>
                   </div>
          
                   <div class="form-group">
                     <label for="exampleInputadmno1">ADMISSION NUMBER</label>
-                    <input type="text" name="admno" value="<?php echo  $_SESSION['admNo']?>" class="form-control" id="exampleInputadmno1" placeholder="Student admission number">
+                    <input type="text" name="admno" value="<?php echo  $_SESSION['admNo']?>" class="form-control" id="exampleInputadmno1" placeholder="Student admission number" disabled>
                   </div>
                   <div class="form-group">
                     <label for="profile" >ADMISSION LETTER </label>

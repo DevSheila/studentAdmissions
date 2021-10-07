@@ -32,10 +32,7 @@
 
   <?php
     session_start();
-    include("config.php");
-    if($_SESSION['logged_student_admission'] == ''){
-      header("Location:signin.php");
-    }
+
 
   ?>
 <div class="wrapper">
@@ -55,11 +52,16 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="home.php" class="nav-link">Home</a>
       </li>
-     
+
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="adminStage1.php" class="nav-link"> Records</a>
+      </li>
+
+      <li class="nav-item d-none d-sm-inline-block active">
+        <a href="adminStage1Form.php" class="nav-link"> <strong>Form </strong></a>
+      </li>
    
     </ul>
-
-
   </nav>
   <!-- /.navbar -->
 
@@ -75,7 +77,14 @@
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        
+        <div class="image">
+          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+        <h5 style="color:white;"> 
+                   
+              </h5>
+        </div>
       </div>
 
       <!-- SidebarSearch Form -->
@@ -104,32 +113,30 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="home.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Home</p>
+                </a>
+              </li>
               <li class="nav-item">
-                  <a href="student.php" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Home</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                <a href="stage1.php" class="nav-link active">
+                <a href="adminStage1.php" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Stage 1</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="stage2.php" class="nav-link">
+                <a href="adminStage2.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Stage 2</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="stage3.php" class="nav-link">
+                <a href="adminStage3.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Stage  3</p>
                 </a>
               </li>
-            </ul>
-              
             </ul>
           </li>
 
@@ -147,12 +154,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Stage 1</h1>
+            <h1 class="m-0">CREATE STUDENT ACCOUNT</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-              <li class="breadcrumb-item active">Stage 1</li>
+              <li class="breadcrumb-item"><a href="home.php">Home</a></li>
+              <li class="breadcrumb-item active">CREATE STUDENT ACCOUNT</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -160,130 +167,62 @@
     </div>
     <!-- /.content-header -->
 
-    <?php
 
-
-
-    
-    // Check connection
-    if (!$conn ||mysqli_connect_errno()) {
-      echo("Connection failed: " . mysqli_connect_error());
-    }else{
-      
-        
-      
-       $adm_no=$_SESSION['logged_student_admission'];
-
-    
-    
-        
-        $sql = "SELECT * FROM docs_collected WHERE adm_no = '$adm_no'";
-        $result = mysqli_query($conn,$sql);
-        // $active = $row['active'];
-        
-        $count = mysqli_num_rows($result);
-        
-      
-      if($count > 0) {
-        // If there's a record of current student
-          ?>
-          <div class="container">
-            <div class="row">
-   
-         
-            
-          <?php
-         while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-           $name = $row['name'];
-           $admNo = $row['adm_no'];
-           $docId= $row['id']; 
-           $admLetter = $row['adm_letter'];
-           $kcseCert= $row['kcse_certificate'];
-           $birthCert= $row['id_birth_cert']; 
-           $docStatus= $row['status']; 
-           $docdateSubmitted= $row['date_submitted']; 
-           ?>
-           
-
-           <div class="col-12 col-md-12 col-sm-12  d-flex align-items-stretch flex-column">
-           <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">Documents  Collected</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-
-              <strong><i class="fas fa-user mr-1"></i>STUDENT NAME</strong><br>
-              
-              <p class="text-muted"><?php echo $name;?></p>
-
-              <hr>
-
-              <strong><i class="fas fa-address-card mr-1"></i>ADMISSION NUMBER</strong><br>
-              <p class="text-muted"><?php echo $admNo?></p>
-
-              <hr>
-
-               <strong><i class="far fa-file-alt mr-1"></i>Admission Letter</strong><br>
-               <a href="stage1Action.php?file=<?php echo $admLetter?>"><?php echo $admLetter;?> <i class="fa fa-download" aria-hidden="true"></i></a>
-
-          
-                <hr>
-                <strong><i class="fas fa-book mr-1"></i> KCSE CERTIFICATE / RESULT SLIP</strong> <br>
-                <a href="stage1Action.php?file=<?php echo $kcseCert?>"><?php echo $kcseCert;?> <i class="fa fa-download" aria-hidden="true"></i></a>
-
-                <hr>
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> BIRTH  CERTIFICATE / NATIONAL ID</strong><br>
-                <a href="stage1Action.php?file=<?php echo $birthCert;?>"><?php echo $birthCert;?> <i class="fa fa-download" aria-hidden="true"></i></a>
-
-                <hr>
-
-           
-
-
-                <strong><i class="fas fa-calendar-alt mr-1"></i>DATE SUBMITTED</strong><br>
-                
-                <p class="text-muted"><?php echo  $docdateSubmitted; ?></p>
-                <hr>
-
-
-                
-                <strong>STATUS<br>
-                
-                <p class="text-muted"><?php echo $docStatus; ?></p>
-
-  
-          
-              </div>
-              <!-- /.card-body -->
-            </div>
-          </div>
-          <?php
-         }
-
-         ?>
-     
-         </div>
-          </div>
-       <?php
-         
-    
-        }else{
-        ?>
+<!-- Main content -->
 <section class="content">
-      <div class="col-12 col-md-12 col-sm-12  d-flex align-items-stretch flex-column">
-           <div class="card card-primary">
-              <div class="card-header text-center">
-                <h3 class="card-title text-center">Documents  Collected</h3>
+      <div class="container-fluid">
+        <div class="row">
+        <div class="col-md-2"></div>
+      
+          <div class="col-md-8">
+            <!-- jquery validation -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">CREATE STUDENT ACCOUNT</small></h3>
               </div>
               <!-- /.card-header -->
-              <div class="card-body text-center">
-                <h3>No Records available</h3>
-                <a href="adminStage1Form.php" type="button" class="btn btn-primary">Enter Record</a>
-              </div>
-           </div>
-      </div>
-</section>
+              <!-- form start -->
+              <form id="quickForm" method="POST" action="bsStage0.php"  enctype="multipart/form-data">
+                <div class="card-body">
+
+                    <div class="form-group">
+                        <input type="hidden" name="id" value="" class="form-control" >
+                    </div>
+                  <div class="form-group">
+                    <label for="exampleInputstudentName1">STUDENT NAME</label>
+                    <input type="text" name="studentName" value="" class="form-control" id="exampleInputstudentName1" placeholder="Student Name">
+                  </div>
+         
+                  <div class="form-group">
+                    <label for="exampleInputadmno1">ADMISSION NUMBER</label>
+                    <input type="text" name="studentAdmNo" value="" class="form-control" id="exampleInputadmno1" placeholder="Student admission number">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputstudentPassword1">PASSWORD</label>
+                    <input type="text" name="studentPassword" value="" class="form-control" id="exampleInputstudentName1" placeholder="Student Name">
+                  </div>
+
+               
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                
+                  <button type="submit" class="btn btn-primary" name ="save">Submit</button>
+
+                
+                </div>
+              </form>
+            </div>
+            <!-- /.card -->
+            </div>
+      
+            <div class="col-md-2"></div>
+          
+          </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -292,15 +231,11 @@
   <!-- /.control-sidebar -->
 
 
-        <?php
-        }
-     
-    }
-    ?>
-
 
  </div>
 <!-- ./wrapper -->
+
+</div>
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>

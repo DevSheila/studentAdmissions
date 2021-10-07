@@ -33,7 +33,7 @@
   <?php
     session_start();
     include("config.php");
-    if($_SESSION['logged_student_admission'] == ''){
+    if($_SESSION['logged_student_admission'] == null){
       header("Location:signin.php");
     }
 
@@ -53,7 +53,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="home.php" class="nav-link">Home</a>
+        <a href="student.php" class="nav-link">Home</a>
       </li>
      
    
@@ -111,13 +111,13 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                <a href="stage1.php" class="nav-link active">
+                <a href="stage1.php" class="nav-link ">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Stage 1</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="stage2.php" class="nav-link">
+                <a href="stage2.php" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Stage 2</p>
                 </a>
@@ -147,12 +147,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Stage 1</h1>
+            <h1 class="m-0">Stage 2</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-              <li class="breadcrumb-item active">Stage 1</li>
+              <li class="breadcrumb-item"><a href="student.php">Home</a></li>
+              <li class="breadcrumb-item active">Stage 2 -PERSONAL DETAILS</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -171,13 +171,13 @@
     }else{
       
         
-      
+    
        $adm_no=$_SESSION['logged_student_admission'];
 
     
     
         
-        $sql = "SELECT * FROM docs_collected WHERE adm_no = '$adm_no'";
+        $sql = "SELECT * FROM stud_profile WHERE adm_no = '$adm_no'";
         $result = mysqli_query($conn,$sql);
         // $active = $row['active'];
         
@@ -194,21 +194,24 @@
             
           <?php
          while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-           $name = $row['name'];
+            $surname = $row['surname'];
+            $othername = $row['other_name'];
+
+           $name=$surname." ".$othername;
            $admNo = $row['adm_no'];
-           $docId= $row['id']; 
-           $admLetter = $row['adm_letter'];
-           $kcseCert= $row['kcse_certificate'];
-           $birthCert= $row['id_birth_cert']; 
-           $docStatus= $row['status']; 
-           $docdateSubmitted= $row['date_submitted']; 
+           $email = $row['email'];
+           $phone = $row['phone'];
+           $age = $row['age'];
+           $gender = $row['gender'];
+           $status= $row['status']; 
+
            ?>
            
 
            <div class="col-12 col-md-12 col-sm-12  d-flex align-items-stretch flex-column">
            <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Documents  Collected</h3>
+                <h3 class="card-title">Personal Details</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -224,34 +227,32 @@
 
               <hr>
 
-               <strong><i class="far fa-file-alt mr-1"></i>Admission Letter</strong><br>
-               <a href="stage1Action.php?file=<?php echo $admLetter?>"><?php echo $admLetter;?> <i class="fa fa-download" aria-hidden="true"></i></a>
+              <strong><i class="fas fa-address-card mr-1"></i>EMAIL</strong><br>
+              <p class="text-muted"><?php echo $email?></p>
 
-          
-                <hr>
-                <strong><i class="fas fa-book mr-1"></i> KCSE CERTIFICATE / RESULT SLIP</strong> <br>
-                <a href="stage1Action.php?file=<?php echo $kcseCert?>"><?php echo $kcseCert;?> <i class="fa fa-download" aria-hidden="true"></i></a>
+              <hr>
 
-                <hr>
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> BIRTH  CERTIFICATE / NATIONAL ID</strong><br>
-                <a href="stage1Action.php?file=<?php echo $birthCert;?>"><?php echo $birthCert;?> <i class="fa fa-download" aria-hidden="true"></i></a>
+              <strong><i class="fas fa-address-card mr-1"></i>PHONE</strong><br>
+              <p class="text-muted"><?php echo $phone?></p>
 
-                <hr>
+              <hr>
 
-           
+              <strong><i class="fas fa-address-card mr-1"></i>AGE </strong><br>
+              <p class="text-muted"><?php echo $admNo?></p>
 
+              <hr>
 
-                <strong><i class="fas fa-calendar-alt mr-1"></i>DATE SUBMITTED</strong><br>
-                
-                <p class="text-muted"><?php echo  $docdateSubmitted; ?></p>
-                <hr>
+              <strong><i class="fas fa-address-card mr-1"></i>GENDER</strong><br>
+              <p class="text-muted"><?php echo $admNo?></p>
 
+              <hr>
 
-                
-                <strong>STATUS<br>
-                
-                <p class="text-muted"><?php echo $docStatus; ?></p>
+              <strong><i class="fas fa-address-card mr-1"></i>STATUS</strong><br>
+              <p class="text-muted"><?php echo $status?></p>
 
+              <hr>
+
+              
   
           
               </div>
@@ -274,12 +275,12 @@
       <div class="col-12 col-md-12 col-sm-12  d-flex align-items-stretch flex-column">
            <div class="card card-primary">
               <div class="card-header text-center">
-                <h3 class="card-title text-center">Documents  Collected</h3>
+                <h3 class="card-title text-center">STUDENT PERSONAL DETAILS</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body text-center">
                 <h3>No Records available</h3>
-                <a href="adminStage1Form.php" type="button" class="btn btn-primary">Enter Record</a>
+                <a href="signup.php" type="button" class="btn btn-primary">Enter Record</a>
               </div>
            </div>
       </div>

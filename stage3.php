@@ -53,7 +53,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="home.php" class="nav-link">Home</a>
+        <a href="student.php" class="nav-link">Home</a>
       </li>
      
    
@@ -147,12 +147,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Stage 1</h1>
+            <h1 class="m-0">Stage 3</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-              <li class="breadcrumb-item active">Stage 1</li>
+              <li class="breadcrumb-item"><a href="student.php">Home</a></li>
+              <li class="breadcrumb-item active">Stage 3</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -163,23 +163,20 @@
     <?php
 
 
-
     
     // Check connection
     if (!$conn ||mysqli_connect_errno()) {
       echo("Connection failed: " . mysqli_connect_error());
     }else{
-      
-        
-      
+
        $adm_no=$_SESSION['logged_student_admission'];
 
     
     
         
-        $sql = "SELECT * FROM docs_collected WHERE adm_no = '$adm_no'";
+        $sql = "SELECT * FROM nominal_roll WHERE adm_no = '$adm_no'";
         $result = mysqli_query($conn,$sql);
-        // $active = $row['active'];
+      
         
         $count = mysqli_num_rows($result);
         
@@ -194,21 +191,21 @@
             
           <?php
          while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-           $name = $row['name'];
-           $admNo = $row['adm_no'];
-           $docId= $row['id']; 
-           $admLetter = $row['adm_letter'];
-           $kcseCert= $row['kcse_certificate'];
-           $birthCert= $row['id_birth_cert']; 
-           $docStatus= $row['status']; 
-           $docdateSubmitted= $row['date_submitted']; 
+            $name = $row['name'];
+            $adm_no=$row['adm_no'];
+            $feesfile=$row['fees_file'];
+            $feestotal=$row['fees_total'];
+            $accomodation=$row['accomodation'];
+            $docStatus=$row['status'];
+ 
+
            ?>
            
 
            <div class="col-12 col-md-12 col-sm-12  d-flex align-items-stretch flex-column">
            <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Documents  Collected</h3>
+                <h3 class="card-title">Personal Details</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -220,38 +217,32 @@
               <hr>
 
               <strong><i class="fas fa-address-card mr-1"></i>ADMISSION NUMBER</strong><br>
-              <p class="text-muted"><?php echo $admNo?></p>
+              <p class="text-muted"><?php echo $adm_no?></p>
 
               <hr>
 
-               <strong><i class="far fa-file-alt mr-1"></i>Admission Letter</strong><br>
-               <a href="stage1Action.php?file=<?php echo $admLetter?>"><?php echo $admLetter;?> <i class="fa fa-download" aria-hidden="true"></i></a>
+              <strong><i class="far fa-file-alt mr-1"></i>FEES FILE</strong><br>
+               <a href="stage1Action.php?file=<?php echo $feesfile?>"><?php echo $feesfile;?> <i class="fa fa-download" aria-hidden="true"></i></a>
 
           
                 <hr>
-                <strong><i class="fas fa-book mr-1"></i> KCSE CERTIFICATE / RESULT SLIP</strong> <br>
-                <a href="stage1Action.php?file=<?php echo $kcseCert?>"><?php echo $kcseCert;?> <i class="fa fa-download" aria-hidden="true"></i></a>
 
-                <hr>
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> BIRTH  CERTIFICATE / NATIONAL ID</strong><br>
-                <a href="stage1Action.php?file=<?php echo $birthCert;?>"><?php echo $birthCert;?> <i class="fa fa-download" aria-hidden="true"></i></a>
+              <strong><i class="fas fa-address-card mr-1"></i>FEES TOTAL </strong><br>
+              <p class="text-muted"><?php echo $feestotal?></p>
 
-                <hr>
+              <hr>
 
-           
+              <strong><i class="fas fa-address-card mr-1"></i>ACCOMODATION</strong><br>
+              <p class="text-muted"><?php echo $accomodation?></p>
 
+              <hr>
 
-                <strong><i class="fas fa-calendar-alt mr-1"></i>DATE SUBMITTED</strong><br>
-                
-                <p class="text-muted"><?php echo  $docdateSubmitted; ?></p>
-                <hr>
+              <strong><i class="fas fa-address-card mr-1"></i>STATUS</strong><br>
+              <p class="text-muted"><?php echo $docStatus?></p>
 
+              <hr>
 
-                
-                <strong>STATUS<br>
-                
-                <p class="text-muted"><?php echo $docStatus; ?></p>
-
+              
   
           
               </div>
@@ -274,12 +265,12 @@
       <div class="col-12 col-md-12 col-sm-12  d-flex align-items-stretch flex-column">
            <div class="card card-primary">
               <div class="card-header text-center">
-                <h3 class="card-title text-center">Documents  Collected</h3>
+                <h3 class="card-title text-center">NOMINAL ROLL</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body text-center">
                 <h3>No Records available</h3>
-                <a href="adminStage1Form.php" type="button" class="btn btn-primary">Enter Record</a>
+                <a href="adminStage3Form.php" type="button" class="btn btn-primary">Enter Record</a>
               </div>
            </div>
       </div>

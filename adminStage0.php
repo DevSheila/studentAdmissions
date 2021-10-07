@@ -25,20 +25,15 @@
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-  <link rel="stylesheet" href="print1.css" media="print"/>
 
-<style>
-  a{
-    color:black;
-  }
-  </style>
+  <link rel="stylesheet" href="print.css" media="print"/>
+
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 
   <?php
     session_start();
-$_SESSION['paginate']='false';
 
 
   ?>
@@ -61,11 +56,11 @@ $_SESSION['paginate']='false';
       </li>
 
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="adminStage1.php" class="nav-link active">  <strong>Records</strong></a>
+        <a href="adminStage0.php" class="nav-link active">  <strong>Records</strong></a>
       </li>
 
       <li class="nav-item d-none d-sm-inline-block ">
-        <a href="adminStage1Form.php" class="nav-link"> <strong>Form </strong></a>
+        <a href="adminStage0Form.php" class="nav-link"> <strong>Form </strong></a>
       </li>
    
     </ul>
@@ -90,17 +85,7 @@ $_SESSION['paginate']='false';
         <div class="info">
       
               <h5 style="color:white;"> 
-                    <?php
-
-                if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
-                    $_SESSION['admin_id']=='1234';
-                    $_SESSION['admin_name']=='caleb' ;
-                }
-                        echo$_SESSION['admin_name']."-";
-
-                       echo $_SESSION['admin_id'] ;
-                      
-                    ?>
+                    
               </h5>
         </div>
       </div>
@@ -138,13 +123,13 @@ $_SESSION['paginate']='false';
                 </a>
               </li>
               <li class="nav-item">
-                <a href="adminStage1.php" class="nav-link active">
+                <a href="adminStage1.php" class="nav-link ">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Stage 1</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="adminStage2.php" class="nav-link">
+                <a href="adminStage2.php" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Stage 2</p>
                 </a>
@@ -172,12 +157,12 @@ $_SESSION['paginate']='false';
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Stage 1: Documents Collection and Verification</h1>
+            <h1 class="m-0">STUDENTS ACCOUNT</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="home.php">Home</a></li>
-              <li class="breadcrumb-item active">Stage 1 Records</li>
+              <li class="breadcrumb-item active">STUDENTS ACCOUNT</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -185,174 +170,14 @@ $_SESSION['paginate']='false';
     </div>
     <!-- /.content-header -->
 
-    <?php
-    include("config.php");
-
-
-
-
-    
-    // Check connection
-    if (!$conn ||mysqli_connect_errno()) {
-      echo("Connection failed: " . mysqli_connect_error());
-    }else{
-
-      if(isset($_POST['pagination'])){
-        $start = $_POST['pagination'];
-        $_SESSION['pagination']='true';
-      }
-
-      if($_SESSION['paginate'] == 'false'){
-        $adm_no= $_SESSION['admNo'];
-    
-    
-        
-        $sql = "SELECT * FROM docs_collected ";
-        $result = mysqli_query($conn,$sql);
-        // $active = $row['active'];
-        
-        $count = mysqli_num_rows($result);
-
-      }else{
-        //>>>>>>>>>>>>>>>  PAGINATION RECORD <<<<<<<<<<<
-
-    
-
-          $sql ="SELECT * FROM docs_collected LIMIT 3,$start ";
-
-    
-          $result = mysqli_query($conn,$sql);
-          // $active = $row['active'];
-          
-          $count = mysqli_num_rows($result);
-
-        }
-     
-      
-        
-
-        
-      
-        if($count > 0) {
-        // If there's a record of current student
-          ?>
-          <section class="container">
- 
-          </section>
+  
          <!-- Main content -->
     <section class="content">
-    <div class="container-fluid">
-          <!-- Small boxes (Stat box) -->
-          <div class="row">
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-primary">
-              <div class="inner">
-                <?php
-                
-                
-                  $allRecordsSql = "SELECT * FROM docs_collected";
-                  $allRecordsResult = mysqli_query($conn,$allRecordsSql);
-                  // $active = $row['active'];
-                  
-                  $allRecordsCount = mysqli_num_rows($allRecordsResult);
 
-                  echo "<h3>$allRecordsCount</h3>";
-                ?>
-                
-
-                <p>Total Stage 1 Records</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-document"></i>
-              </div>
-           
-            </div>
-          </div>
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <?php
-                
-                
-                  $completeStatusSql = "SELECT * FROM docs_collected WHERE status = 'complete'";
-                  $completeStatusResult = mysqli_query($conn,$completeStatusSql);
-                  // $active = $row['active'];
-                  
-                  $completeStatusCount = mysqli_num_rows($completeStatusResult);
-
-                  echo "<h3>$completeStatusCount</h3>";
-                ?>
-                
-
-                <p>Complete</p>
-              </div>
-              <div class="icon">
-                <i class="ion  ion-checkmark"></i>
-              </div>
-           
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-success">
-              <div class="inner">
-              <?php
-                
-                
-                $approvedStatusSql = "SELECT * FROM docs_collected WHERE status = 'approved'";
-                $approvedStatusResult = mysqli_query($conn,$approvedStatusSql);
-                // $active = $row['active'];
-                
-                $approvedStatusCount = mysqli_num_rows($approvedStatusResult);
-
-                echo "<h3>$approvedStatusCount</h3>";
-              ?>
-
-                <p>Aproved</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-            
-            </div>
-          </div>
-          <!-- ./col -->
-
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-              <?php
-                
-                
-                $declinedStatusSql = "SELECT * FROM docs_collected WHERE status = 'declined'";
-                $declinedStatusResult = mysqli_query($conn,$declinedStatusSql);
-                // $active = $row['active'];
-                
-                $declinedStatusCount = mysqli_num_rows($declinedStatusResult);
-
-                echo "<h3>$declinedStatusCount</h3>";
-              ?>
-
-                <p>Declined</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-              </div>
-            
-            </div>
-          </div>
-          <!-- ./col -->
-        </div>
-    </div>
 <!-- Default box -->
 <div class="card">
   <div class="card-header">
-    <h3 class="card-title">Stage 1 - Document Collection & Verifctation</h3>
+    <h3 class="card-title">Stages- Student Personal Details</h3>
 
     <div class="card-tools">
       <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -380,40 +205,62 @@ $_SESSION['paginate']='false';
                 <th>
                     ADM_NO
                 </th>
-                <th  class="text-center">
-                    ADM LETTER
-                </th>
+            
 
                 <th>
-                KCSE CERT/ SLIP
+               STAGE1
                 </th>
 
 
                 <th>
-                BIRTH CERT/ NATIONAL ID
+               STAGE 2
                 </th>
 
                 <th>
-               STATUS
+                   STAGE 3
                 </th>
 
                 <th>
-               ACTION
+              STAGE 4
                 </th>
+
+                <th>
+              STAGE 5
+                </th>
+
+                <th>
+                  ACTION
+                </th>
+
+                
             </tr>
         </thead>
         <tbody>
         <?php
+            include("config.php");
+            // Check connection
+    if (!$conn ||mysqli_connect_errno()) {
+        echo("Connection failed: " . mysqli_connect_error());
+    }else{
+  
+      
+         
+      
+          
+          $sql = "SELECT * FROM stud_account ";
+          $result = mysqli_query($conn,$sql);
+          // $active = $row['active'];
+          
+          $count = mysqli_num_rows($result);
+  
+        }
         $serial = 0;
          while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-           $docId= $row['id']; 
-           $name = $row['name'];
-           $adm_no=$row['adm_no'];
-           $admLetter = $row['adm_letter'];
-           $kcseCert= $row['kcse_certificate'];
-           $birthCert= $row['id_birth_cert']; 
-           $docStatus= $row['status']; 
-           $docdateSubmitted= $row['date_submitted']; 
+           $studAccountId= $row['id']; 
+           $studentName = $row['name'];
+           $studentAdmNo = $row['adm_no'];
+        
+
            $serial ++;
            ?>
            
@@ -422,68 +269,141 @@ $_SESSION['paginate']='false';
                     <?php echo $serial?>
                 </td>
                 <td>
-                    <?php echo $docId?>
+                    <?php echo $studAccountId?>
                 </td>
                 <td>
-                <?php echo $name?>
+                <?php echo $studentName?>
                 </td>
 
                 <td>
-                <?php echo $adm_no?>
+                <?php echo $studentAdmNo?>
                 </td>
                 <td >
-                <a href="stage1Action.php?file=<?php echo $admLetter?>"><?php echo $admLetter;?> <i class="fa fa-download" aria-hidden="true"></i></a>
+                        <?php 
+                           $stage1 = "SELECT * FROM docs_collected ";
+                           $stage1Result = mysqli_query($conn,$stage1);
+                         
+                           
+                           $stage1Count = mysqli_num_rows($stage1Result);
+                   
+                         
+                         $stage1studentAdmNoFound=false;
+                          while( $row = mysqli_fetch_array($stage1Result,MYSQLI_ASSOC)){
+                              if($row['adm_no'] == $studentAdmNo){
+                                $stage1studentAdmNoFound=true;
+                                ?>
+                                    <a  type="button"
+                                        class="btn 
+                                                <?php 
+                                                if($row['status'] == 'complete'){echo 'btn-primary';}
+                                                if($row['status'] == 'approved'){ echo 'btn-success';}
+                                                if($row['status'] == 'declined'){ echo 'btn-danger';}
+                                                ?> 
+                                                ">
+                                        <?php echo $row['status']?>
+                                    </a>
+                            <?php
+
+                              }
+                         }
+                            if($stage1studentAdmNoFound ==false){
+                                ?>
+                                <a href="adminStage1.php" type="button"class="btn btn-warning" >No Record</a>
+                            <?php } ?>
+                </td>
+
+                <td>
+                <?php 
+                           $stage2 = "SELECT * FROM stud_profile ";
+                           $stage2Result = mysqli_query($conn,$stage2);
+                         
+                           
+                           $stage2Count = mysqli_num_rows($stage2Result);
+                   
+                         
+                         $stage2studentAdmNoFound=false;
+                          while( $stage2row = mysqli_fetch_array($stage2Result,MYSQLI_ASSOC)){
+                              if($stage2row ['adm_no'] == $studentAdmNo){
+                                
+                                $stage2studentAdmNoFound=true;
+                                ?>
+                                    <a  type="button"
+                                        class="btn 
+                                                <?php 
+                                                if($stage2row ['status'] == 'complete'){echo 'btn-primary';}
+                                                if($stage2row ['status'] == 'approved'){ echo 'btn-success';}
+                                                if($stage2row ['status'] == 'declined'){ echo 'btn-danger';}
+                                                ?> 
+                                                ">
+                                        <?php echo $stage2row ['status']?>
+                                    </a>
+                            <?php
+
+                              }
+                         }
+
+                         if($stage2studentAdmNoFound ==false){
+                          ?>
+                          <a href="adminStage3.php" type="button"class="btn btn-warning" >No Record</a>
+                      <?php } ?>
+                          
+                
+                </td>
+
+                <td>
+                <?php 
+                           $stage3 = "SELECT * FROM nominal_roll";
+                           $stage3Result = mysqli_query($conn,$stage1);
+                         
+                           
+                           $stage3Count = mysqli_num_rows($stage1Result);
+                   
+                         
+                         
+                         $stage3studentAdmNoFound=false;
+                          while( $row = mysqli_fetch_array($stage3Result,MYSQLI_ASSOC)){
+                              if($row['adm_no'] == $studentAdmNo){
+                                $stage3studentAdmNoFound=true;
+                                ?>
+                                    <a  type="button"
+                                        class="btn 
+                                                <?php 
+                                                if($row['status'] == 'complete'){echo 'btn-primary';}
+                                                if($row['status'] == 'approved'){ echo 'btn-success';}
+                                                if($row['status'] == 'declined'){ echo 'btn-danger';}
+                                                ?> 
+                                               ">
+                                        <?php echo $row['status']?>
+                                    </a>
+                            <?php
+
+                              }
+                         }
+                            if($stage3studentAdmNoFound ==false){
+                                ?>
+                                <a href="adminStage3.php" type="button"class="btn btn-warning" >No Record</a>
+                            <?php } ?>
+                
+
+                </td>
+
            
-                </td>
 
                 <td>
-                <a href="stage1Action.php?file=<?php echo $kcseCert?>"><?php echo $kcseCert;?> <i class="fa fa-download" aria-hidden="true"></i></a>
+                <td>
 
                 </td>
 
-                <td>
-                <a href="stage1Action.php?file=<?php echo $birthCert;?>"><?php echo $birthCert;?> <i class="fa fa-download" aria-hidden="true"></i></a>
+                <td class="project-actions ">
                
-
-                </td>
-
-                <td>
-                <div class="input-group-prepend">
-                    <button type="button"
-                            class="btn 
-                            <?php 
-                            if($docStatus == 'complete'){echo 'btn-primary';}
-                            if($docStatus == 'approved'){ echo 'btn-success';}
-                            if($docStatus == 'declined'){ echo 'btn-danger';}?> 
-                              dropdown-toggle"
-                            data-toggle="dropdown">
-                    <?php echo $docStatus?>
-
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li class="dropdown-item"><a href="bsStage1.php?updateApproved=<?php echo $docId?>">Approved</a></li>
-                      <li class="dropdown-item"><a href="bsStage1.php?updateDeclined=<?php echo $docId?>">Declined</a></li>
-             
-                    </ul>
-                  </div>
-
-                </td>
-
-
-            
-                <td class="project-actions text-right">
-               
-                    <a class="btn btn-info btn-sm" href="bsStage1.php?edit=<?php echo $docId?>">
-                        <i class="fas fa-pencil-alt">
-                        </i>
-                        Edit
-                    </a>
-                    <a class="btn btn-danger btn-sm" href="stage1Action.php?delete=<?php echo $docId?>">
+                   <a class="btn btn-danger btn-sm text-center" href="stage0Action.php?delete=<?php echo  $studentAdmNo?>">
                         <i class="fas fa-trash">
                         </i>
                         Delete
                     </a>
+                    
                 </td>
+        
             </tr>
 
             <?php
@@ -502,17 +422,17 @@ $_SESSION['paginate']='false';
                                
     </div>
 
-    <nav aria-label="Page navigation example " class ="m-2">
-  <ul class="pagination justify-content-end">
+            <nav aria-label="Page navigation example " class ="m-2">
+        <ul class="pagination justify-content-end">
 
-    <li class="page-item"><a class="page-link" href="adminStage1.php?pagination=<?php echo 1 ?>">1</a></li>
-    <li class="page-item"><a class="page-link" href="adminStage1.php?pagination=<?php echo 3?>">2</a></li>
-    <li class="page-item"><a class="page-link" href="adminStage1.php?pagination=<?php echo 6?>">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="bsStage1.php?pagination=<?php echo 12?>">Next</a>
-    </li>
-  </ul>
-</nav>
+            <li class="page-item"><a class="page-link" href="adminStage1.php?pagination=<?php echo 1 ?>">1</a></li>
+            <li class="page-item"><a class="page-link" href="adminStage1.php?pagination=<?php echo 3?>">2</a></li>
+            <li class="page-item"><a class="page-link" href="adminStage1.php?pagination=<?php echo 6?>">3</a></li>
+            <li class="page-item">
+            <a class="page-link" href="bsStage1.php?pagination=<?php echo 12?>">Next</a>
+            </li>
+        </ul>
+        </nav>
   </div>
   <!-- /.card-body -->
 </div>
@@ -526,31 +446,8 @@ $_SESSION['paginate']='false';
             
 
    
-       <?php
-         
     
-        }else{
-        ?>
 
-   <section>
-     
-   </section>
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-
-
-        <?php
-        }
-     
-    }
-    ?>
-
-
- </div>
-<!-- ./wrapper -->
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
@@ -588,6 +485,5 @@ $_SESSION['paginate']='false';
 <script src="dist/js/pages/dashboard.js"></script>
 </body>
 </html>
-
 
 
