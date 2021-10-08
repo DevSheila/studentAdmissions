@@ -47,6 +47,7 @@ if(isset($_POST['submit'])){
         $loginNumRow = mysqli_num_rows($loginResult);
         if($loginNumRow  == 1){
           $loginRow = mysqli_fetch_assoc($loginResult);
+          $_SESSION['logged_student_name'] = $loginRow ['id'];
           $_SESSION['logged_student_admission'] = $loginRow ['adm_no'];
           $_SESSION['logged_student_name'] = $loginRow ['name'];
           header("Location:student.php");

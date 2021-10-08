@@ -197,13 +197,7 @@ $_SESSION['paginate']='false';
       echo("Connection failed: " . mysqli_connect_error());
     }else{
 
-      if(isset($_POST['pagination'])){
-        $start = $_POST['pagination'];
-        $_SESSION['pagination']='true';
-      }
-
-      if($_SESSION['paginate'] == 'false'){
-        $adm_no= $_SESSION['admNo'];
+   
     
     
         
@@ -213,20 +207,6 @@ $_SESSION['paginate']='false';
         
         $count = mysqli_num_rows($result);
 
-      }else{
-        //>>>>>>>>>>>>>>>  PAGINATION RECORD <<<<<<<<<<<
-
-    
-
-          $sql ="SELECT * FROM docs_collected LIMIT 3,$start ";
-
-    
-          $result = mysqli_query($conn,$sql);
-          // $active = $row['active'];
-          
-          $count = mysqli_num_rows($result);
-
-        }
      
       
         
