@@ -34,6 +34,9 @@
 
         include("config.php");
         session_start();
+        if( $_SESSION['admin_id'] == ''){
+          header("Location:adminsignin.php");
+        }
         ?>
 <div class="wrapper">
 
@@ -160,10 +163,11 @@
 <div class="content-wrapper">
     <!-- Main content -->
     <section class="content ">
-      <div class="container-fluid ">
+      <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
-        <div class="row m-5">
-          <div class="col-lg-5 col-6 m-5">
+        <div class="row ">
+    
+          <div class="col-lg-5 col-md-5 col-10  ">
             <!-- small box -->
             <div class="small-box bg-navy">
               <div class="inner">
@@ -188,8 +192,9 @@
               <a href="adminStage1.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
+         
           <!-- ./col -->
-          <div class="col-lg-5 col-6 m-5">
+          <div class="col-lg-5 col-md-5 col-10  ">
             <!-- small box -->
             <div class="small-box bg-gray">
               <div class="inner">
@@ -214,11 +219,14 @@
               <a href="adminStage2.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
+      
+
         </div>
 
-        <div class="row m-5">
+        <div class="row ">
+  
           <!-- ./col -->
-          <div class="col-lg-5 col-6 m-5 ">
+          <div class="col-lg-5 col-md-5 col-10   ">
             <!-- small box -->
             <div class="small-box bg-gray disabled">
               <div class="inner">
@@ -244,6 +252,10 @@
             </div>
           </div>
           <!-- ./col -->
+         
+          <div class="col-lg-5 col-md-5 col-10 ">
+          </div>
+         
         
           <!-- ./col -->
         </div>

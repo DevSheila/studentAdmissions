@@ -37,6 +37,41 @@
       header("Location:signin.php");
     }
 
+
+    
+    // Check connection
+    if (!$conn ||mysqli_connect_errno()) {
+      echo("Connection failed: " . mysqli_connect_error());
+    }else{
+       $adm_no=$_SESSION['logged_student_admission'];
+
+
+        $stage1Sql = "SELECT * FROM docs_collected WHERE adm_no = '$adm_no'";
+        $stage1Result = mysqli_query($conn,$stage1Sql);
+        $stage1Count = mysqli_num_rows($stage1Result);
+        if($stage1Count >0) {
+          while( $stage1Row = mysqli_fetch_array($stage1Result,MYSQLI_ASSOC)){
+            $stage1Status = $stage1Row['status'];
+          }
+        }
+
+
+        $stage2Sql = "SELECT * FROM stud_profile WHERE adm_no = '$adm_no'";
+        $stage2Result = mysqli_query($conn,$stage2Sql);
+        $stage2Count = mysqli_num_rows($stage2Result);
+        if($stage2Count > 0 ) {
+          while( $stage2Row = mysqli_fetch_array($stage2Result,MYSQLI_ASSOC)){
+            $stage2Status = $stage2Row['status'];
+          }
+        }
+
+    }
+
+
+    
+
+  ?>
+
   ?>
 <div class="wrapper">
 
@@ -122,12 +157,30 @@
                   <p>Stage 2</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="stage3.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Stage  3</p>
-                </a>
-              </li>
+              <?php 
+                if(($stage1Status == 'approved') && ($stage2Status == 'approved')){
+
+                ?>
+                  <li class="nav-item">
+                    <a href="stage3.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Stage 3</p>
+                    </a>
+                  </li>
+                  <?php
+                }else{
+                  ?>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Stage 3</p>
+                      </a>
+                    </li>
+                  <?php
+
+                }
+                ?>
+           
             </ul>
               
             </ul>

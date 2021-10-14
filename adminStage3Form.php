@@ -31,8 +31,13 @@
 <body class="hold-transition sidebar-mini layout-fixed">
 
   <?php
+  include("config.php");
     session_start();
-
+    
+    if($_SESSION['logged_student_admission'] == ''){
+      header("Location:signin.php");
+    }
+    
 
   ?>
 <div class="wrapper">
@@ -50,12 +55,10 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="home.php" class="nav-link">Home</a>
+        <a href="student.php" class="nav-link">Home</a>
       </li>
 
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="adminStage3.php" class="nav-link"> Records</a>
-      </li>
+   
 
       <li class="nav-item d-none d-sm-inline-block active">
         <a href="adminStage3Form.php" class="nav-link"> <strong>Form </strong></a>
@@ -121,7 +124,7 @@
             </a>
             <ul class="nav nav-treeview">
             <li class="nav-item">
-                <a href="home.php" class="nav-link">
+                <a href="student.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Home</p>
                 </a>
@@ -165,7 +168,7 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="home.php">Home</a></li>
+              <li class="breadcrumb-item"><a href="student.php">Home</a></li>
               <li class="breadcrumb-item active">Stage 3 Forms</li>
             </ol>
           </div><!-- /.col -->
@@ -198,12 +201,12 @@
                   </div>
                 <div class="form-group">
                     <label for="exampleInputstudentName1">STUDENT NAME</label>
-                    <input type="text" name="studentName" value="<?php echo $_SESSION['logged_student_name']?>" class="form-control" id="exampleInputstudentName1" placeholder="Student Name" disabled>
+                    <input type="text" name="studentName" value="<?php echo $_SESSION['logged_student_name']?>" class="form-control" id="exampleInputstudentName1" placeholder="Student Name" readonly>
                   </div>
          
                   <div class="form-group">
                     <label for="exampleInputadmno1">ADM NO</label>
-                    <input type="text" name="admno" value="<?php echo  $_SESSION['logged_student_admission']?>" class="form-control" id="exampleInputadmno1" placeholder="Student admission number" disabled>
+                    <input type="text" name="admno" value="<?php echo  $_SESSION['logged_student_admission']?>" class="form-control" id="exampleInputadmno1" placeholder="Student admission number" readonly>
                   </div>
      
 
@@ -233,7 +236,6 @@
                 <!-- /.card-body -->
                 <div class="card-footer">
                 <?php
-
                   if($_SESSION['update'] == 'true'){
                     ?>
                     <button type="submit" class="btn btn-success" name ="update">Update</button>

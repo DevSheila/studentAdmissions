@@ -2,9 +2,7 @@
 session_start();
 include("config.php");
 
-if($_SESSION['logged_student_admission'] == ''){
-  header("Location:signin.php");
-}
+
 
 if(isset($_SESSION['admissionNumber'])){
   $studId = $_SESSION['stud_id'];
@@ -22,6 +20,10 @@ if(isset($_SESSION['admissionNumber'])){
   $stud_status =  $_SESSION['status'];
 
 
+}
+if($_SESSION['logged_student_admission'] == ''){
+  header("Location:signin.php");
+  echo("Kindly log in");
 }
 ?>
 
@@ -345,7 +347,7 @@ $query="SELECT status stud_profile"
     <?php
             
             $stage2_status='';
-            $stage2Status = "SELECT * FROM docs_collected WHERE adm_no = '$adm_no'";
+            $stage2Status = "SELECT * FROM stud_profile WHERE adm_no = '$adm_no'";
             $stage2Result = mysqli_query($conn,$stage2Status);
             while( $row = mysqli_fetch_array($stage2Result,MYSQLI_ASSOC)){
                 $stage2_status= $row['status'];
@@ -361,16 +363,15 @@ $query="SELECT status stud_profile"
                             if($stage2_status == 'complete'){echo 'bg-primary';}
                             if($stage2_status == 'approved'){ echo 'bg-success';}
                             if($stage2_status == 'declined'){ echo 'bg-danger';}
-                            if($stage1_status == 'no record'){ echo 'bg-warning';}
+                            if($stage2_status == 'no record'){ echo 'bg-warning';}
                             ?>" 
                             ><?php echo $stage2_status ;?>
        </td>
   </tr>
   <th>Stage III:</th>
-    <?php
+  <?php
             
             $stage3_status='';
-            $adm_no ='';
             $stage3Status = "SELECT * FROM nominal_roll WHERE adm_no = '$adm_no'";
             $stage3Result = mysqli_query($conn,$stage3Status);
             while( $row = mysqli_fetch_array($stage3Result,MYSQLI_ASSOC)){
@@ -382,16 +383,23 @@ $query="SELECT status stud_profile"
             }
             
     ?>
-     <td  class="bg 
+    <td  class="bg 
                             <?php 
-                            if($stage3_status== 'complete'){echo 'bg-primary';}
+                            if($stage3_status == 'complete'){echo 'bg-primary';}
                             if($stage3_status == 'approved'){ echo 'bg-success';}
                             if($stage3_status == 'declined'){ echo 'bg-danger';}
                             if($stage3_status == 'no record'){ echo 'bg-warning';}
-                            ?>" >
-                             <?php echo $stage3_status;?>
+                            ?>" 
+                            ><?php echo $stage3_status ;?>
        </td>
+  </tr>
 
+  <tr class="text-center">
+  <td>
+  <a href="stage4.php">Generate School ID</a>
+  </td>
+
+  </tr>
 </table>
               </div>
             </div>

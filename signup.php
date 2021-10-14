@@ -1,5 +1,9 @@
 <?php
+session_start();
 include("config.php");
+if($_SESSION['logged_student_admission'] == ''){
+  header("Location:signin.php");
+}
 
 $adm_no=$surname=$other_names=$gender = $age =$DOB =$email=$birthyear =$course =$new_image_name=$phone =$password =$confirmpassword ="";
 //dsplay errors
@@ -189,7 +193,7 @@ if($stmt = mysqli_prepare($conn, $insertData)){
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Maseno University | Sign Up</title>
+  <title>Stage 2 :Personal Details</title>
     <link rel="icon" href="dist/img/Maseno-University-Logo.png" type="image/icon type">
     <!-- <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/"> -->
     <!-- Bootstrap core CSS -->
@@ -197,11 +201,6 @@ if($stmt = mysqli_prepare($conn, $insertData)){
 <link rel="stylesheet" href="style3.css">
  <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <!-- <link rel="stylesheet" href="font-awesome-4.7.0\css\font-awesome.css">
-        <link rel="stylesheet" href="font-awesome-4.7.0\css\font-awesome.min.css">
-        <link rel="stylesheet" href="font-awesome-4.7.0\fonts"> -->
-  <!-- <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css"> -->
 
    <!-- Font Awesome -->
    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
@@ -213,7 +212,7 @@ if($stmt = mysqli_prepare($conn, $insertData)){
   <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
 </head>
 
-<body class="hold-transition register-page">
+<body >
 
    <div class="container ">
 
@@ -223,14 +222,14 @@ if($stmt = mysqli_prepare($conn, $insertData)){
             <div class="register-box">
               <div class="card card-outline card-primary">
                 <div class="card-header text-center">
-                <h1>Maseno University</h1>
+                <h1>Stage 2 :Personal Details</h1>
                 </div>
                 <div class="card-body">
-                  <p class="login-box-msg">Register as a new student</p>
+                  <p class="login-box-msg">Stage 2 :Personal Details</p>
 
                   <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"  method="post" enctype="multipart/form-data">
                   <div class="input-group mb-3">
-                      <input type="text" class="form-control" placeholder="Admission Number" name="adm_no"  required>
+                      <input type="text" class="form-control" placeholder="Admission Number" name="adm_no" value="<?php echo $_SESSION['logged_student_admission']?>" readonly required>
                       <div class="input-group-append">
                         <div class="input-group-text">
                           <span><i class="fas fa-book "></i></span>
@@ -238,7 +237,7 @@ if($stmt = mysqli_prepare($conn, $insertData)){
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                      <input type="text" class="form-control" placeholder="Surname" name="surname" required>
+                      <input type="text" class="form-control" placeholder="Surname" name="surname" value="<?php echo $_SESSION['logged_student_name']?>"  readonly required>
                       <div class="input-group-append">
                         <div class="input-group-text">
                           <span class="fas fa-user"></span>
@@ -291,15 +290,32 @@ if($stmt = mysqli_prepare($conn, $insertData)){
                       </div>
                     </div>
                     <div class="input-group mb-3">
+                      <select class="form-control" id="school" name=""  required onchange="showSuggestion(this.value)" >
+                                      <option value="" disabled selected >Select A School</option>
+                                      <option value="School Of Computing And Informatics"  >School Of Computing And Informatics</option>
+                                      <option value="School Of Medicine">School Of Medicine</option>
+                                      <option value="School Of Arts And Design">School Of Arts And Design</option>
+
+
+                                   
+                      </select>
+                      <div class="input-group-append">
+                        <div class="input-group-text">
+                          <span class="fas fa-book"></span>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
                       <select class="form-control" id="course" name="course"  required >
-                                <option value="" disabled selected>--select A course--</option>
-                                      <option value="BSc. Computer Science">BSc. Computer Science</option>
+                      <option value="" disabled selected>--select A course--</option>
+                                      <!-- <option value="BSc. Computer Science">BSc. Computer Science</option>
                                     <option value="BSc. Computer Technology">BSc. Computer Technology</option>
                                     <option value="BSc. Internet Technology">BSc. Internet Technology</option>
                                       <option value="BSc. Computer Informatics">BSc. Computer Informatics</option>
                                       <option value="BSc. Software Engineering">BSc. Software Engineering</option>
-                                      <option value="BSc. Machine Computing">BSc. Machine Computing</option>
-                                </select>
+                                      <option value="BSc. Machine Computing">BSc. Machine Computing</option> -->
+                      </select>
                       <div class="input-group-append">
                         <div class="input-group-text">
                           <span class="fas fa-book"></span>
@@ -351,34 +367,13 @@ if($stmt = mysqli_prepare($conn, $insertData)){
                       </div>
                       <!-- /.col -->
                       <div class="col-4">
-                        <button type="submit" class="btn btn-primary btn-block" name="submit">Register</button>
+                        <button type="submit" class="btn btn-primary btn-block" name="submit">Submit</button>
                       </div>
-                      <style>
-                          .container{
-                              margin-top: 420px;
-                          }
-                        .link{
-                            text-decoration: none;
-                            color:white;
-                        }
-                        .link:hover{
-                            color:black;
-                        }
-                      </style>
-                      <!-- /.col -->
+                      
                     </div>
                   </form>
 
-                  <div class="social-auth-links text-center">
-                    <a href="#" class="btn btn-block btn-primary">
-                      <i class="fab fa-facebook mr-2"></i>
-                      Sign up using Facebook
-                    </a>
-                    <a href="#" class="btn btn-block btn-danger">
-                      <i class="fab fa-google-plus mr-2"></i>
-                      Sign up using Google+
-                    </a>
-                  </div>
+                 
 
                 </div>
                 <!-- /.form-box -->
@@ -441,6 +436,39 @@ if($stmt = mysqli_prepare($conn, $insertData)){
       </div>
    </div>
 
+   <script>
+
+function showSuggestion(str){
+    console.log(str);
+
+    if(str.length ==0){
+        document.getElementById('course').innerHTML = '';
+    }else{
+        //AJAX REQ
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status ==200){
+              document.getElementById('course').innerHTML = this.responseText;
+
+              // document.getElementById('course').innerHTML = `<option value="School Of Computing And Informatics"  >${this.responseText}</option>`;
+              console.log(this.responseText);
+
+            }
+        }
+
+
+
+        xmlhttp.open("GET","course.php?q="+str,true);
+        xmlhttp.send();
+
+
+    }
+
+}
+
+</script>
+
   <!-- jQuery -->
 
   <script src="../../plugins/jquery/jquery.min.js"></script>
@@ -451,3 +479,6 @@ if($stmt = mysqli_prepare($conn, $insertData)){
 <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+
+

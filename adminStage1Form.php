@@ -32,12 +32,40 @@
 
   <?php
     session_start();
-    // $update= false;
-    // $name = '';
-    // $admNo='';
-    // $admLetter ='';
-    // $birthCert ='';
-    // $kcseCert ='';
+    include("config.php");
+    if($_SESSION['logged_student_admission'] == ''){
+      header("Location:signin.php");
+    }
+
+    // Check connection
+    if (!$conn ||mysqli_connect_errno()) {
+      echo("Connection failed: " . mysqli_connect_error());
+    }else{
+       $adm_no=$_SESSION['logged_student_admission'];
+
+
+        $stage1Sql = "SELECT * FROM docs_collected WHERE adm_no = '$adm_no'";
+        $stage1Result = mysqli_query($conn,$stage1Sql);
+        $stage1Count = mysqli_num_rows($stage1Result);
+        if($stage1Count >0) {
+          while( $stage1Row = mysqli_fetch_array($stage1Result,MYSQLI_ASSOC)){
+            $stage1Status = $stage1Row['status'];
+          }
+        }
+
+
+        $stage2Sql = "SELECT * FROM nominal_roll WHERE adm_no = '$adm_no'";
+        $stage2Result = mysqli_query($conn,$stage2Sql);
+        $stage2Count = mysqli_num_rows($stage2Result);
+        if($stage2Count > 0 ) {
+          while( $stage2Row = mysqli_fetch_array($stage2Result,MYSQLI_ASSOC)){
+            $stage2Status = $stage2Row['status'];
+          }
+        }
+
+    }
+
+    
 
   ?>
 <div class="wrapper">
@@ -55,7 +83,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="home.php" class="nav-link">Home</a>
+        <a href="student.php" class="nav-link">Home</a>
       </li>
 
       <li class="nav-item d-none d-sm-inline-block">
@@ -87,17 +115,7 @@
         </div>
         <div class="info">
         <h5 style="color:white;"> 
-                    <?php
-
-  if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
-    $_SESSION['admin_id']=='1234';
-    $_SESSION['admin_name']=='caleb' ;
-  }
-                          echo$_SESSION['admin_name']."-";
-
-                       echo $_SESSION['admin_id'] ;
-                      
-                    ?>
+                    
               </h5>
         </div>
       </div>
@@ -129,7 +147,7 @@
             </a>
             <ul class="nav nav-treeview">
             <li class="nav-item">
-                <a href="home.php" class="nav-link">
+                <a href="student.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Home</p>
                 </a>
@@ -140,18 +158,54 @@
                   <p>Stage 1</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="adminStage2.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Stage 2</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="adminStage3.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Stage  3</p>
-                </a>
-              </li>
+              <?php 
+                if($stage1Status == 'approved'){
+
+                ?>
+                  <li class="nav-item">
+                    <a href="stage2.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Stage 2</p>
+                    </a>
+                  </li>
+                  <?php
+                }else{
+                  ?>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Stage 2</p>
+                      </a>
+                    </li>
+                  <?php
+
+                }
+                ?>
+
+              <?php 
+                if(($stage1Status == 'approved') && ($stage2Status == 'approved')){
+
+                ?>
+                  <li class="nav-item">
+                    <a href="stage3.php" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Stage 3</p>
+                    </a>
+                  </li>
+                  <?php
+                }else{
+                  ?>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Stage 3</p>
+                      </a>
+                    </li>
+                  <?php
+
+                }
+                ?>
+           
             </ul>
           </li>
 
@@ -173,7 +227,7 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="home.php">Home</a></li>
+              <li class="breadcrumb-item"><a href="student.php">Home</a></li>
               <li class="breadcrumb-item active">Stage 1 Forms</li>
             </ol>
           </div><!-- /.col -->
@@ -197,7 +251,7 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form id="quickForm" method="POST" action="bsStage1.php"  enctype="multipart/form-data">
+              <form id="quickForm" method="POST" action="bsStage1.php"  enctype="multipart/form-data">s
                 <div class="card-body">
                 <p>Select a document less than 4MB with (.pdf , .txt extension)</p>
 

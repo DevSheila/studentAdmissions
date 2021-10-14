@@ -33,8 +33,16 @@
 <body class="hold-transition sidebar-mini layout-fixed">
 
   <?php
+  include('config.php');
     session_start();
-$_SESSION['paginate']='false';
+
+    $_SESSION['paginate']='false';
+
+    if( $_SESSION['admin_id'] == ''){
+      header("Location:adminsignin.php");
+    }
+
+    
 
 
   ?>
@@ -60,9 +68,6 @@ $_SESSION['paginate']='false';
         <a href="adminStage2.php" class="nav-link active">  <strong>Records</strong></a>
       </li>
 
-      <li class="nav-item d-none d-sm-inline-block ">
-        <a href="signup.php" class="nav-link"> <strong>Form </strong></a>
-      </li>
    
     </ul>
   </nav>
@@ -182,7 +187,6 @@ if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
     <!-- /.content-header -->
 
     <?php
-    include("config.php");
 
 
 
@@ -191,37 +195,14 @@ if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
     if (!$conn ||mysqli_connect_errno()) {
       echo("Connection failed: " . mysqli_connect_error());
     }else{
-
-      if(isset($_POST['pagination'])){
-        $start = $_POST['pagination'];
-        $_SESSION['pagination']='true';
-      }
-
-      if($_SESSION['paginate'] == 'false'){
-        $adm_no= $_SESSION['admNo'];
-    
-    
         
-        $sql = "SELECT * FROM stud_profile ";
-        $result = mysqli_query($conn,$sql);
-        // $active = $row['active'];
-        
-        $count = mysqli_num_rows($result);
+      $sql = "SELECT * FROM stud_profile ";
+      $result = mysqli_query($conn,$sql);
+      // $active = $row['active'];
+      
+      $count = mysqli_num_rows($result);
 
-      }else{
-        //>>>>>>>>>>>>>>>  PAGINATION RECORD <<<<<<<<<<<
-
-    
-
-          $sql ="SELECT * FROM stud_profile LIMIT 3,$start ";
-
-    
-          $result = mysqli_query($conn,$sql);
-          // $active = $row['active'];
-          
-          $count = mysqli_num_rows($result);
-
-        }
+      
      
       
         
@@ -232,7 +213,8 @@ if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
         // If there's a record of current student
           ?>
          <!-- Main content -->
-    <section class="content">
+    
+         <section class="content">
 
 <!-- Default box -->
 <div class="card">

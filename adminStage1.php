@@ -38,8 +38,10 @@
 
   <?php
     session_start();
-$_SESSION['paginate']='false';
-
+    $_SESSION['paginate']='false';
+    if( $_SESSION['admin_id'] == ''){
+      header("Location:adminsignin.php");
+    }
 
   ?>
 <div class="wrapper">
@@ -64,9 +66,6 @@ $_SESSION['paginate']='false';
         <a href="adminStage1.php" class="nav-link active">  <strong>Records</strong></a>
       </li>
 
-      <li class="nav-item d-none d-sm-inline-block ">
-        <a href="adminStage1Form.php" class="nav-link"> <strong>Form </strong></a>
-      </li>
    
     </ul>
   </nav>
@@ -92,10 +91,7 @@ $_SESSION['paginate']='false';
               <h5 style="color:white;"> 
                     <?php
 
-                if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
-                    $_SESSION['admin_id']=='1234';
-                    $_SESSION['admin_name']=='caleb' ;
-                }
+             
                         echo$_SESSION['admin_name']."-";
 
                        echo $_SESSION['admin_id'] ;

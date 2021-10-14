@@ -34,6 +34,9 @@
 
   <?php
     session_start();
+    if($_SESSION['admin_id'] == ''){
+      header('Location:adminsignin.php');
+    }
 
 
   ?>
@@ -59,10 +62,7 @@
         <a href="adminStage0.php" class="nav-link active">  <strong>Records</strong></a>
       </li>
 
-      <li class="nav-item d-none d-sm-inline-block ">
-        <a href="adminStage0Form.php" class="nav-link"> <strong>Form </strong></a>
-      </li>
-   
+
     </ul>
   </nav>
   <!-- /.navbar -->
