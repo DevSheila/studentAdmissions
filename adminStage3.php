@@ -194,20 +194,44 @@ if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
     }else{
     
     
-        
-      $sql = "SELECT * FROM nominal_roll ";
-      $result = mysqli_query($conn,$sql);
+      if(isset($_GET['page_no']) && $_GET['page_no']!=""){
+        $page_no = $_GET['page_no'];
+      }else{
+        $page_no = 1;
+      }
+      //fails with a bigger number???????????
+      $total_records_per_page = 3;
+      $endpoint =($page_no - 1)*$total_records_per_page;
+      $prev_page = $page_no - 1;
+      $nxt_page = $page_no + 1;
+      // $adjacents = "2"; 
+      
+      //>>>>>>>>>>>>>>>  PAGINATION RECORD <<<<<<<<<<<
+
+  //get the total number of pages for pagination
+
+        $sql_counter ="SELECT COUNT(*) AS total_records  FROM nominal_roll";
+
+  
+        $result = mysqli_query($conn,$sql_counter);
+        // $active = $row['active'];
+        $total_records = mysqli_fetch_array($result);
+        $total_records = $total_records['total_records'];
+        //We need to find the number of pages by dividing the total records by the number of records per page 
+     //ceil() rounds up decimals to nearest integer
+        $page_count = ceil($total_records / $total_records_per_page);
+        $second_last = $page_count - 1;
+        // $count = mysqli_num_rows($result);
+
+      //we use our $endpoint as limit
+      $query =" SELECT *  FROM nominal_roll LIMIT $endpoint, $total_records_per_page";
+    $countsql = mysqli_query($conn, $query);
+    
+      // $sql = "SELECT * FROM nominal_roll ";
+      // $result = mysqli_query($conn,$sql);
       // $active = $row['active'];
       
-      $count = mysqli_num_rows($result);
-
-     
-      
-        
-
-        
-      
-        if($count > 0) {
+    
         // If there's a record of current student
           ?>
          <!-- Main content -->
@@ -376,7 +400,7 @@ if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
         <tbody>
         <?php
         $serial = 0;
-         while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+         while( $row = mysqli_fetch_array($countsql,MYSQLI_ASSOC)){
            $docId= $row['id']; 
            $name = $row['name'];
            $adm_no=$row['adm_no'];
@@ -463,23 +487,37 @@ if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
 
         </tbody>
     </table>
+    <center>
+    <div class="pagination justify-content-end" style='padding: 10px 20px 0px; border-top: dotted 1px #CCC;'>
+<strong>Page <?php echo $page_no." of ".$page_count; ?></strong>
+</div>
+<ul  class="pagination justify-content-end">
+  <?php if($page_no > 1){
+  echo "<li  class='page-item'><a class= `page-link` href='?page_no=1'>First Page</a></li>";
+  }  ?>
+  <li  class="page-item" <?php if($page_no <= 1){echo "class='disabled page-item'";}?>>
+  <a class="page-link" <?php if ($page_no > 1){echo " href='?page_no=$prev_page'";
+  } ?>>Previous</a>
+   </li>
+   <li  class="page-item" <?php if($page_no >=$page_count){
+     echo "class='disabled page-item'";
+   }?>>
+  <a class="page-link " <?php if($page_no < $page_count){
+    echo"href='?page_no=$nxt_page'";
+    }?> >Next</a> 
+  </li>
+  <?php if($page_no < $page_count){
+    echo "<li  class='page-item'><a class= `page-link` href='?page_no=$page_count'>Last>></a></li>";
+  }?>
 
-    <div class="d-flex justify-content-center m-1">
-         <a  class="btn  btn-sm btn-primary print-btn" onclick ="window.print();" id="login-btn" >Print</a>
+</ul>
+</center>
+<div class="d-flex justify-content-center m-1">
+      <!-- personal details download -->
+         <a  class="btn  btn-sm btn-primary print-btn" href="stage3Details.php "id="login-btn" >Print</a>
                                
     </div>
 
-    <nav aria-label="Page navigation example " class ="m-2">
-  <ul class="pagination justify-content-end">
-
-    <li class="page-item"><a class="page-link" href="adminStage1.php?pagination=<?php echo 1 ?>">1</a></li>
-    <li class="page-item"><a class="page-link" href="adminStage1.php?pagination=<?php echo 3?>">2</a></li>
-    <li class="page-item"><a class="page-link" href="adminStage1.php?pagination=<?php echo 6?>">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="bsStage1.php?pagination=<?php echo 12?>">Next</a>
-    </li>
-  </ul>
-</nav>
   </div>
   <!-- /.card-body -->
 </div>
@@ -493,61 +531,7 @@ if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
             
 
    
-       <?php
-         
-    
-        }else{
-        ?>
-<!-- Main content -->
-<section class="content">
-      <div class="container-fluid">
-         
-        <div class="row">
-        <div class="col-md-2"></div>
-      
-          <div class="col-md-8">
-            <!-- jquery validation -->
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">NOMINAL ROLL</small></h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <form id="quickForm" method="POST" action="bsStage1.php"  enctype="multipart/form-data">
-                <div class="card-body">
-                <p>Select an image less than MB with (.jpeg , .jpg, .png extension)</p>
-                  <div class="form-group">
-                    <label for="profile" >ADMISSION LETTER </label>
-                      <input type="file" class="form-control " id="admLetter" name="admLetter"/>
-                  </div>
-                  <div class="form-group">
-                    <label for="profile" >KCSE CERTIFICATE / RESULT SLIP</label>
-                      <input type="file" class="form-control " id="kcseCert" name="kcseCert"/>
-                  </div>
 
-                  <div class="form-group">
-                    <label for="profile" >ID/BIRTH CERTIFICATE</label>
-                      <input type="file" class="form-control " id="bithCert" name="birthCert"/>
-                  </div>
-
-               
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-              </form>
-            </div>
-            <!-- /.card -->
-            </div>
-      
-            <div class="col-md-2"></div>
-          
-          </div>
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -559,7 +543,7 @@ if(($_SESSION['admin_id']=='' ) ||($_SESSION['admin_name'] == '')){
         <?php
         }
      
-    }
+    
     ?>
 
 

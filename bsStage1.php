@@ -200,7 +200,7 @@ if(isset($_GET['updateDeclined'])){
                 $_SESSION['admLetter'] =$row['adm_letter'];
                 $_SESSION['birthCert'] =$row['id_birth_cert'];
                 $_SESSION['kcseCert'] =$row['kcse_certificate'];
-                header("Location: adminStage1Form.php");
+                header("Location: adminStage1.php");
 
             
               

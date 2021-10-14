@@ -51,6 +51,7 @@ if($_SESSION['logged_student_admission'] == ''){
           $studSurname= $stage2Row['surname'];
           $studOtherName = $stage2Row['other_name'];
           $studName =$studSurname.' '.$studOtherName ;
+          $studEmail=$stage2Row['email'];
           $studAdmission = $stage2Row['adm_no'];
           $studCourse = $stage2Row['course'];
           $studGender = $stage2Row['gender'];
@@ -153,18 +154,27 @@ if($_SESSION['logged_student_admission'] == ''){
         $mail->setFrom("sheilasharon10@gmail.com");
         //Enable HTML
         $mail->isHTML(true);
-        $mail->addAttachment($file_name);
+        $mail->addAttachment('studentID/'.$file_name);
         $mail ->Body ="<h1>Your Temporary School ID</h1><br>";
 
         // set plaintext body
         // $mail ->Body ="This is plain text email body";
         //Add recepient
-        $mail->addAddress("sheilasharon10@gmail.com");
+        $mail->addAddress($studEmail);
         //finally sendemail
         if($mail->Send()){
-            echo "Email sent ..!";
+          
+            ?>
+            <script>
+              alert("<?php echo $studName.""; ?> Email sent successfully");
+            </script>
+            <?php
         }else{
-            echo "Error ... !";
+          ?>
+          <script>
+            alert("<?php echo $studName.""; ?>Error has occured,Try Again Later" );
+          </script>
+          <?php
         }
 
         //close smtp connection

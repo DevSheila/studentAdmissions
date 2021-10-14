@@ -1,0 +1,60 @@
+CREATE TABLE animals(id serial PRIMARY KEY, name varchar,type VARCHAR,health VARCHAR,age VARCHAR);
+
+CREATE TABLE rangers(id serial PRIMARY KEY,name VARCHAR,badge_number VARCHAR,phone_number VARCHAR,email VARCHAR);
+
+
+CREATE TABLE sightings(id serial PRIMARY KEY,animal_name VARCHAR,ranger_id INT,location_id VARCHAR,sight_time VARCHAR);
+
+CREATE TABLE rangers_sightings(id serial PRIMARY KEY,ranger_id INT,sighting_id INT);
+
+CREATE TABLE moving_movers_bios(id serial PRIMARY KEY,name VARCHAR, inventory_charges INT, charge_per_distance INT, contacts INT,extra_Services VARCHAR); 
+
+SELECT * FROM items;
+SELECT * FROM animals;
+SELECT * FROM moving_orders;
+
+CREATE DATABASE shopping_test WITH TEMPLATE shopping;
+CREATE DATABASE movers_api;
+
+DROP TABLE moving_movers_bios;
+DROP TABLE moving_orders;
+_stores
+DROP DATABASE wildlife_tracker_test;
+DROP DATABASE movers_api_test;
+
+DELETE FROM rangers_sightings *;
+
+psql.exe -h 127.0.0.1 -U postgres -w movers_api
+
+
+CREATE TABLE items (id SERIAL PRIMARY KEY,name VARCHAR,price int);
+CREATE TABLE stores (id SERIAL PRIMARY KEY,store_name VARCHAR,address VARCHAR,website VARCHAR);
+CREATE TABLE items_stores (id SERIAL PRIMARY KEY,item_id int,store_id int);
+
+CREATE TABLE stores (id SERIAL PRIMARY KEY ,name VARCHAR,address VARCHAR,website VARCHAR);
+CREATE TABLE items ( id SERIAL PRIMARY KEY,name VARCHAR,brand VARCHAR,quantity VARCHAR,price int,storeid int);
+CREATE TABLE stores_items (id SERIAL PRIMARY KEY,itemid int,storeid int);
+
+stores/items/bread
+
+INSERT INTO items (name,price) VALUES ('bread',50);
+INSERT INTO items(CustomerName, ContactName, Address, City, PostalCode, Country)
+VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');
+
+
+"user_name":"Johhny",
+  "user_email":"johhnny@mail.com",
+  "inventory":"bedsitter",
+  "current_location":"cbd",
+  "new_location":"cbd",
+  "moving_company":"travella",
+"moving_company":"travella@gmail.com",
+  "total_price":688,
+  "order_status":"received",
+  "pickup_time":"jkkj"
+
+   "name": "wambui"
+    "inventory_charges":37376
+    "charge_per_distance":3846
+    "contacts":4998
+    "extra_service" : "ryeuyfd"

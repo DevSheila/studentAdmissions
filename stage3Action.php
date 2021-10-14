@@ -52,7 +52,7 @@ session_start();
 
           mysqli_query($conn,$sql);
 
-          header("Location: adminStage3Form.php");
+          header("Location: adminStage3.php");
 
 
         }

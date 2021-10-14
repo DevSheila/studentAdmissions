@@ -7,7 +7,7 @@ if($_SESSION['logged_student_admission'] == ''){
 
 $adm_no=$surname=$other_names=$gender = $age =$DOB =$email=$birthyear =$course =$new_image_name=$phone =$password =$confirmpassword ="";
 //dsplay errors
-// $adm_no_err=$surname_err=$other_names_err=$gender_err  =$DOB_err =$email_err =$course_err =$phone_err =$password_err =$confirmpassword_err ="";
+$adm_no_err=$surname_err=$other_names_err=$gender_err  =$DOB_err =$email_err =$course_err =$phone_err =$password_err =$confirmpassword_err ="";
 if(isset($_POST['submit'])){
     //validate surname
    if(empty(trim($_POST['surname']))){
@@ -18,6 +18,7 @@ if(isset($_POST['submit'])){
      $surname=trim($_POST['surname']);
    }
    
+
    //validate Other Names
    if(empty(trim($_POST['other_names']))){
     $other_name="Please your Other Name.";
@@ -26,6 +27,7 @@ if(isset($_POST['submit'])){
    }else{
      $other_names=trim($_POST['other_names']);
    }
+
    //validate admission number and check if any like it exists instud_profile
    if(empty(trim($_POST['adm_no']))){
     $adm_no_err="Enter the assigned Admission Number";
@@ -174,17 +176,17 @@ if($stmt = mysqli_prepare($conn, $insertData)){
        header("location: signin.php");
       // echo $adm_no, $surname,$other_names,$DOB,$age,$conn,$phone,$gender,$email,$new_image_name;
   } else{
-      echo "Oops! Something went wrong. Please try again later.";
-      echo   $adm_no_err,$surname_err,$other_names_err,$gender_err ,$DOB_err ,$email_err ,$course_err ,$phone_err ,$password_err ,$confirmpassword_err,$errors;
+    echo "Oops! Something went wrong. Please try again later.";
 
-  }
+}
 
   // Close statement
   mysqli_stmt_close($stmt);
 }
    }else{
-    
-   }
+    echo   $adm_no_err,$surname_err,$other_names_err,$gender_err ,$DOB_err ,$email_err ,$course_err ,$phone_err ,$password_err ,$confirmpassword_err,$errors;
+
+}
   }
 }
 ?>
@@ -333,7 +335,7 @@ if($stmt = mysqli_prepare($conn, $insertData)){
                     <p>Select an image less than 2MB with (.jpeg , .jpg, .png extension)</p>
                     <p><b>Profile Picture</b></p>
                     <div class="input-group mb-3">
-                      <input type="file" class="form-control" placeholder="Profile Picture"  required>
+                      <input type="file" class="form-control" name="image" placeholder="Profile Picture"  required>
                       <div class="input-group-append">
                         <div class="input-group-text">
                           <span class="fas fa-image"></span>

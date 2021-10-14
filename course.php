@@ -1,18 +1,18 @@
 <?php
 // Array with names
-$a[] = "Bsc. Computer Science";
-$a[] = "Bsc. Computer Technology";
-$a[] = "Bsc. Maths and Computer Science";
+$a[] = "Bsc Computer Science";
+$a[] = "Bsc Computer Technology";
+$a[] = "Bsc Maths and Computer Science";
 
 // Array with names
-$m[] = "Bsc. Nuerology with IT";
-$m[] = "Bsc. Pharmacy with IT";
-$m[] = "Bsc. Nursing";
+$m[] = "Bsc Nuerology with IT";
+$m[] = "Bsc Pharmacy with IT";
+$m[] = "Bsc Nursing";
 
 // Array with names
-$d[] = "Bsc. Interor Design With IT";
-$d[] = "Bsc. Music Production With IT";
-$d[] = "Bsc. Theater Arts With IT";
+$d[] = "Bsc Interor Design With IT";
+$d[] = "Bsc Music Production With IT";
+$d[] = "Bsc Theater Arts With IT";
 
 
 

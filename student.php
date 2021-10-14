@@ -25,6 +25,43 @@ if($_SESSION['logged_student_admission'] == ''){
   header("Location:signin.php");
   echo("Kindly log in");
 }
+
+
+$stage1_status='';
+$adm_no = $_SESSION['logged_student_admission'];
+$stage1Status = "SELECT * FROM docs_collected WHERE adm_no = '$adm_no'";
+$stage1Result = mysqli_query($conn,$stage1Status);
+while( $row = mysqli_fetch_array($stage1Result,MYSQLI_ASSOC)){
+    $stage1_status= $row['status'];
+}
+  
+if($stage1_status == ''){
+  $stage1_status= 'no record';
+}
+
+
+$stage2_status='';
+$stage2Status = "SELECT * FROM stud_profile WHERE adm_no = '$adm_no'";
+$stage2Result = mysqli_query($conn,$stage2Status);
+while( $row = mysqli_fetch_array($stage2Result,MYSQLI_ASSOC)){
+    $stage2_status= $row['status'];
+}
+  
+if($stage2_status == ''){
+  $stage2_status= 'no record';
+}
+
+    
+$stage3_status='';
+$stage3Status = "SELECT * FROM nominal_roll WHERE adm_no = '$adm_no'";
+$stage3Result = mysqli_query($conn,$stage3Status);
+while( $row = mysqli_fetch_array($stage3Result,MYSQLI_ASSOC)){
+    $stage3_status= $row['status'];
+}
+  
+if($stage3_status == ''){
+  $stage3_status= 'no record';
+}
 ?>
 
 
@@ -160,7 +197,12 @@ if($_SESSION['logged_student_admission'] == ''){
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
           <!-- User image here -->
-          <img src="dist/img/avatar3.png" class="img-circle elevation-2" alt="User Image">
+          <?php if($image != ''){?>
+          <img src="userimg/<?php echo $image;?>" class="rounded-circle " style= "height:50px; width:50px"alt="User Image">
+            <?php }else{?>
+              <img src="dist/img/avatar.png" class="rounded-circle " style= "height:50px; width:50px"alt="User Image">
+
+              <?php }?>
         </div>
         <div class="info">
           <!-- username -->
@@ -258,9 +300,67 @@ if($_SESSION['logged_student_admission'] == ''){
   <div class="mb-3">
     <!-- rename according to files -->
     <a href="stage1.php"><button class="btn btn-info">Stage I</button></a>
-    <!-- if the previous is approved then display -->
+   
+      <?php 
+      if( $stage1_status !='approved' ){
+        ?>
+        <a href="#"><button class="btn btn-info" onclick="stage2Alert();">Stage II</button></a>
+        <script>
+          function stage2Alert(){
+            alert( "Stage 1 has to be approved to proceed to stage 2");
+
+          }
+          </script>
+
+        <?php
+      }else{
+        ?>
     <a href="stage2.php"><button class="btn btn-info">Stage II</button></a>
+
+        <?php
+      }
+      ?>
+
+  <?php 
+      if( $stage1_status !='approved' && $stage2_status !='approved' ){
+        ?>
+        <a href="#"><button class="btn btn-info" onclick="stage3Alert();">Stage III</button></a>
+        <script>
+          function stage3Alert(){
+            alert( "Stage 1  and 2 have to be approved to proceed to stage 3");
+
+          }
+          </script>
+
+        <?php
+      }else{
+        ?>
     <a href="stage3.php"><button class="btn btn-info">Stage III</button></a>
+   
+
+        <?php
+      }
+      ?>
+    <!-- if the previous is approved then display -->
+
+    <div class="card-header">
+                <center><h5 class="m-0">Personal Details
+                <?php
+                  if( $surname == ''){
+                    ?>
+                    <a href="#" type="button" class="btn  btn-sm btn-success" onclick="printAlert();">Print</a>
+                    <script>
+                      function printAlert(){
+                        alert ("Complete Stage 2 to print Personal Details");
+                      }
+                    </script>
+                    <?php
+                  }else{
+                  ?>
+                  <a   href = "studDetails.php" class="btn  btn-sm btn-success " >Print</a>
+                <?php } ?>
+               
+              </div>
   </div>
   
 
@@ -319,20 +419,7 @@ $query="SELECT status stud_profile"
   </tr>
   <tr>
     <th>Stage I:</th>
-    <?php
-            $stage1_status='';
-            $adm_no = $_SESSION['logged_student_admission'];
-            $stage1Status = "SELECT * FROM docs_collected WHERE adm_no = '$adm_no'";
-            $stage1Result = mysqli_query($conn,$stage1Status);
-            while( $row = mysqli_fetch_array($stage1Result,MYSQLI_ASSOC)){
-                $stage1_status= $row['status'];
-            }
-              
-            if($stage1_status == ''){
-              $stage1_status= 'no record';
-            }
-            
-    ?>
+  
      <td  class="bg 
                             <?php 
                             if($stage1_status== 'complete'){echo 'bg-primary';}
@@ -344,60 +431,91 @@ $query="SELECT status stud_profile"
        </td>
   <tr>
     <th>Stage II:</th>
-    <?php
-            
-            $stage2_status='';
-            $stage2Status = "SELECT * FROM stud_profile WHERE adm_no = '$adm_no'";
-            $stage2Result = mysqli_query($conn,$stage2Status);
-            while( $row = mysqli_fetch_array($stage2Result,MYSQLI_ASSOC)){
-                $stage2_status= $row['status'];
-            }
-              
-            if($stage2_status == ''){
-              $stage2_status= 'no record';
-            }
-            
-    ?>
+
     <td  class="bg 
-                            <?php 
+                            <?php
+                              if(($stage1_status =='declined') ||($stage1_status =='complete')){
+                                $stage2_status = 'Pending Review';
+                                echo 'bg-dark';
+                               } 
                             if($stage2_status == 'complete'){echo 'bg-primary';}
                             if($stage2_status == 'approved'){ echo 'bg-success';}
                             if($stage2_status == 'declined'){ echo 'bg-danger';}
                             if($stage2_status == 'no record'){ echo 'bg-warning';}
+                          
                             ?>" 
+
                             ><?php echo $stage2_status ;?>
        </td>
+
+       <td>
+       <?php
+          if(($stage1_status =='declined') ||($stage1_status =='complete')){
+            ?>
+            
+            <a type= "button" class="btn btn-dark" href="adminStage1Form.php">Enter Stage 1</a>
+            <?php
+          }
+       ?>
+       </td>
+      
   </tr>
   <th>Stage III:</th>
-  <?php
-            
-            $stage3_status='';
-            $stage3Status = "SELECT * FROM nominal_roll WHERE adm_no = '$adm_no'";
-            $stage3Result = mysqli_query($conn,$stage3Status);
-            while( $row = mysqli_fetch_array($stage3Result,MYSQLI_ASSOC)){
-                $stage3_status= $row['status'];
-            }
-              
-            if($stage3_status == ''){
-              $stage3_status= 'no record';
-            }
-            
-    ?>
+
     <td  class="bg 
                             <?php 
+                             if(($stage1_status =='declined') ||($stage1_status =='complete') ||($stage2_status =='declined') || ($stage2_status == 'complete') ){ 
+                              echo 'bg-dark';
+                              $stage3_status = 'Pending Review';
+                            }
                             if($stage3_status == 'complete'){echo 'bg-primary';}
                             if($stage3_status == 'approved'){ echo 'bg-success';}
                             if($stage3_status == 'declined'){ echo 'bg-danger';}
                             if($stage3_status == 'no record'){ echo 'bg-warning';}
+                           
+
                             ?>" 
                             ><?php echo $stage3_status ;?>
+       </td>
+
+       <td>
+       <?php
+          if(($stage1_status =='declined') ){
+            ?>
+            
+            <a type= "button" class="btn btn-dark" href="adminStage1Form.php">Enter Stage 1</a>
+            <?php
+          }
+
+          if(($stage2_status =='declined') ){
+            ?>
+            
+            <a type= "button" class="btn btn-dark" href="adminStage2Form.php">Enter Stage 2</a>
+            <?php
+          }
+       ?>
        </td>
   </tr>
 
   <tr class="text-center">
-  <td>
-  <a href="stage4.php">Generate School ID</a>
+  <td> 
+    <?php
+    if(($stage1_status !='approved') || ($stage2_status !='approved') || ($stage3_status !='approved') ){
+      ?>
+      <a href="#" type="button" class="btn btn-primary" onclick="idAlert();">Generate School ID</a>
+      <script>
+        function idAlert(){
+          alert ("All stages have to be complete to generate school ID");
+        }
+      </script>
+      <?php
+    }else{
+    ?>
+    <a type="button" class="btn btn-primary" href="emailer.php">Generate School ID</a>
+  <?php } ?>
   </td>
+
+  
 
   </tr>
 </table>

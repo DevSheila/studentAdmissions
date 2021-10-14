@@ -2,58 +2,81 @@
 session_start();
 include("config.php");
 $adm_no=$password="";
+
+
+$_SESSION['stud_id'] = '';
+$_SESSION['admissionNumber'] = '';
+$_SESSION['other_name'] = '';
+$_SESSION['surname'] = '';
+$_SESSION['age'] = '';
+$_SESSION['DOB'] = '';
+$_SESSION['phone'] ='';
+$_SESSION['email'] ='';
+$_SESSION['course'] = '';
+$_SESSION['image'] = '';
+$_SESSION['gender'] = '';
+$_SESSION['status'] = '';
 if(isset($_POST['submit'])){
   $adm_no=$_POST['adm_no'];
   $password=$_POST['password'];
 
+      // login query code block
 
+      $loginQuery = "SELECT * FROM stud_account WHERE adm_no='$adm_no' AND password = '$password'";
+      $loginResult = mysqli_query($conn,$loginQuery) or die(mysqli_error($conn));
+      $loginNumRow = mysqli_num_rows($loginResult);
 
-    $query = "SELECT * FROM stud_profile WHERE adm_no='$adm_no' AND password = '$password'";
-    $res = mysqli_query($conn,$query) or die(mysqli_error($conn));
-    $row = mysqli_num_rows($res);
+      if($loginNumRow  == 1){
+        $loginRow = mysqli_fetch_assoc($loginResult);
+        $_SESSION['logged_student_name'] = $loginRow ['id'];
+        $_SESSION['logged_student_admission'] = $loginRow ['adm_no'];
+        $_SESSION['logged_student_name'] = $loginRow ['name'];
 
-
-
-    if($row == 1){
-      // $_SESSION['adm_no'] = $adm_no;
-      $sessionStater=mysqli_fetch_assoc($res);
+        $query = "SELECT * FROM stud_profile WHERE adm_no='$adm_no'";
+        $res = mysqli_query($conn,$query) or die(mysqli_error($conn));
+        $row = mysqli_num_rows($res);
     
+    
+    
+        if($row == 1){
+          // $_SESSION['adm_no'] = $adm_no;
+          $sessionStater=mysqli_fetch_assoc($res);
+        
+    
+          $_SESSION['stud_id'] = $sessionStater['id'];
+          $_SESSION['admissionNumber'] = $sessionStater['adm_no'];
+          $_SESSION['other_name'] = $sessionStater['other_name'];
+          $_SESSION['surname'] = $sessionStater['surname'];
+          $_SESSION['age'] = $sessionStater['age'];
+          $_SESSION['DOB'] = $sessionStater['DOB'];
+          $_SESSION['phone'] = $sessionStater['phone'];
+          $_SESSION['email'] = $sessionStater['email'];
+          $_SESSION['course'] = $sessionStater['course'];
+          $_SESSION['image'] = $sessionStater['image'];
+          $_SESSION['gender'] = $sessionStater['gender'];
+          $_SESSION['status'] = $sessionStater['status'];
 
-      $_SESSION['stud_id'] = $sessionStater['id'];
-      $_SESSION['admissionNumber'] = $sessionStater['adm_no'];
-      $_SESSION['other_name'] = $sessionStater['other_name'];
-      $_SESSION['surname'] = $sessionStater['surname'];
-      $_SESSION['age'] = $sessionStater['age'];
-      $_SESSION['DOB'] = $sessionStater['DOB'];
-      $_SESSION['phone'] = $sessionStater['phone'];
-      $_SESSION['email'] = $sessionStater['email'];
-      $_SESSION['course'] = $sessionStater['course'];
-      $_SESSION['image'] = $sessionStater['image'];
-      $_SESSION['gender'] = $sessionStater['gender'];
-      $_SESSION['status'] = $sessionStater['status'];
-      //redirect to student page
-      print_r($row);
+          //redirect to student page
+
+          // print_r($row)
+          ;}
+  // end of login query code block
+
+  header("Location:student.php");
+
+
+
+
+
+   
 
      
     }else{
-      print_r($row);
+      // print_r($row);
       echo "invalid Login Details.";
     }
 
-      // login query code block
-
-        $loginQuery = "SELECT * FROM stud_account WHERE adm_no='$adm_no' AND password = '$password'";
-        $loginResult = mysqli_query($conn,$loginQuery) or die(mysqli_error($conn));
-        $loginNumRow = mysqli_num_rows($loginResult);
-        if($loginNumRow  == 1){
-          $loginRow = mysqli_fetch_assoc($loginResult);
-          $_SESSION['logged_student_name'] = $loginRow ['id'];
-          $_SESSION['logged_student_admission'] = $loginRow ['adm_no'];
-          $_SESSION['logged_student_name'] = $loginRow ['name'];
-          header("Location:student.php");
-        }
-    // end of login query code block
-
+      
   }
 
 ?><!doctype html>
