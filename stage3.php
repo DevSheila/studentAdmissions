@@ -123,12 +123,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Stage 1</h1>
+            <h1 class="m-0">Stage 3</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="student.php">Home</a></li>
-              <li class="breadcrumb-item active">Stage 1</li>
+              <li class="breadcrumb-item active">Stage 3</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -156,7 +156,7 @@
     
     
         
-        $sql = "SELECT * FROM docs_collected WHERE adm_no = '$adm_no'";
+        $sql = "SELECT * FROM nominal_roll WHERE adm_no = '$adm_no'";
         $result = mysqli_query($conn,$sql);
         // $active = $row['active'];
         
@@ -177,18 +177,18 @@
            $name = $row['name'];
            $admNo = $row['adm_no'];
            $docId= $row['id']; 
-           $admLetter = $row['adm_letter'];
-           $kcseCert= $row['kcse_certificate'];
-           $birthCert= $row['id_birth_cert']; 
+           $fees_file = $row['fees_file'];
+           $fees_total= $row['fees_total'];
+          
            $docStatus= $row['status']; 
-           $docdateSubmitted= $row['date_submitted']; 
+           $accomodation= $row['accomodation']; 
            ?>
            
 
            <div class="col-12 col-md-12 col-sm-12  d-flex align-items-stretch flex-column">
            <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Documents  Collected</h3>
+                <h3 class="card-title">Nominall Roll</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -204,27 +204,28 @@
 
               <hr>
 
-               <strong><i class="far fa-file-alt mr-1"></i>Admission Letter</strong><br>
-               <a href="stage1Action.php?file=<?php echo $admLetter?>"><?php echo $admLetter;?> <i class="fa fa-download" aria-hidden="true"></i></a>
+               <strong><i class="far fa-file-alt mr-1"></i>ACCOMODATION</strong><br>
+               <p class="text-muted"><?php echo $accomodation;?></p>
+
 
           
                 <hr>
-                <strong><i class="fas fa-book mr-1"></i> KCSE CERTIFICATE / RESULT SLIP</strong> <br>
-                <a href="stage1Action.php?file=<?php echo $kcseCert?>"><?php echo $kcseCert;?> <i class="fa fa-download" aria-hidden="true"></i></a>
+                <strong><i class="fas fa-book mr-1"></i>FEES FILE</strong> <br>
+                <a href="stage3Action.php?file=<?php echo $fees_file?>"><?php echo $fees_file;?> <i class="fa fa-download" aria-hidden="true"></i></a>
 
                 <hr>
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> BIRTH  CERTIFICATE / NATIONAL ID</strong><br>
-                <a href="stage1Action.php?file=<?php echo $birthCert;?>"><?php echo $birthCert;?> <i class="fa fa-download" aria-hidden="true"></i></a>
+                <strong><i class="fas fa-map-marker-alt mr-1"></i>FEES TOTAL</strong><br>
+                <p class="text-muted"><?php echo $fees_total;?></p>
 
                 <hr>
 
            
 
 
-                <strong><i class="fas fa-calendar-alt mr-1"></i>DATE SUBMITTED</strong><br>
+                <!-- <strong><i class="fas fa-calendar-alt mr-1"></i>DATE SUBMITTED</strong><br>
                 
-                <p class="text-muted"><?php echo  $docdateSubmitted; ?></p>
-                <hr>
+                <p class="text-muted"><?php// echo  $docdateSubmitted; ?></p>
+                <hr> -->
 
 
                 
@@ -235,6 +236,13 @@
   
           
               </div>
+              <center>
+    <div>
+              <p class="badge-dark">This stage has been approved , 
+                if the documents are not the ones you submitted visit the Administrator or 
+                <a href="tel:+245723383534"><i class="fa fa-phone"> </i> Call Us  &nbsp;+245723383534</a></p>
+            </div>
+    </center>
               <!-- /.card-body -->
             </div>
           </div>

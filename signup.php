@@ -3,7 +3,7 @@ include("config.php");
 
 $adm_no=$surname=$other_names=$gender = $age =$DOB =$email=$birthyear =$course =$new_image_name=$phone =$password =$confirmpassword ="";
 //dsplay errors
-// $adm_no_err=$surname_err=$other_names_err=$gender_err  =$DOB_err =$email_err =$course_err =$phone_err =$password_err =$confirmpassword_err ="";
+ $adm_no_err=$surname_err=$other_names_err=$gender_err =$age_err =$DOB_err =$email_err =$course_err =$phone_err =$password_err =$confirmpassword_err ="";
 if(isset($_POST['submit'])){
     //validate surname
    if(empty(trim($_POST['surname']))){
@@ -99,6 +99,9 @@ if(isset($_POST['submit'])){
    $birth=explode("-",$DOB);
    $birthyear=$birth[0];
    $age=intval($date)-intval($birthyear);
+   if($age <17){
+     $age_err="You don't meet the mininum age requirement.";
+   }
   
    //validate phone number
    if(empty($_POST['phone'])){
@@ -125,53 +128,63 @@ if(isset($_POST['submit'])){
       $confirmpassword_err = "Please confirm password.";     
   } else{
       $confirmpassword = trim($_POST["confirmpassword"]);
-      if(empty($password_err) && ($password != $confirmpassword)){
+      if(empty($password_err) && (trim($_POST["password"])!= $confirmpassword)){
           $confirmpassword_err = "Password did not match.";
            }else{
                $password = trim($_POST["password"]);
       }
   }
 }
+
  //image file validation
-      $errors= array();
-      if(!empty($_FILES["image"])){
-      $file_name = $_FILES['image']['name'];
-      $file_size =$_FILES['image']['size'];
-      $file_tmp =$_FILES['image']['tmp_name'];
-      $file_type=$_FILES['image']['type'];
-      $file_ext=strtolower(end(explode('.',$_FILES['image']['name'])));
-      $time = time();
-      $new_image_name = $time."_".$file_name;
-      $extensions= array("jpeg","jpg","png");
-      //check if image file is of  a valid  extension
-            if(in_array($file_ext,$extensions) === false){
-              $errors[]="extension not allowed, please choose a JPEG or PNG file.";
-          }
-          
-          if($file_size > 2097152){
-              $errors[]='File size must be excatly 2 MB';
-          }
+ $errors= array();
+ $file_name = $_FILES['image']['name'];
+ $file_size =$_FILES['image']['size'];
+ $file_tmp =$_FILES['image']['tmp_name'];
+ $file_type=$_FILES['image']['type'];
+//  str_replace(" ","", $file_name
+$file_ext = strtolower($file_name);
+ $file_ext=explode('.',$file_name);
+ $file_ext_end = end($file_ext);
+ $time = time();
+ $new_image_name = $time."_".$file_name;
+ $extensions= array("jpeg","jpg","png");
+ //check if image file is of  a valid  extension
+       if(in_array($file_ext,$extensions)=== false){
+         $errors[]="extension not allowed, please choose a JPEG or PNG file.";
+     }
      
-        if(empty($errors)==true){
-          $image_dir = "userimg";
-          //for session
-          $image_session = "$image_dir/$new_image_name";
-            move_uploaded_file($file_tmp,"$image_dir/$new_image_name");
-        }
+     if($file_size > 5097152){
+         $errors[]='File size must less than  5MB';
+     }
+
+   if(empty($errors)==true){
+     $image_dir = "userimg";
+     //for session
+     $image_session = "$image_dir/$new_image_name";
+       move_uploaded_file($file_tmp,"$image_dir/$new_image_name");
    }
+  
    //push data into database
-   if(($adm_no_err && $surname_err&&$other_name_err&&$gender_err &&$age_err
-    &&$DOB_err &&$email_err &&$course_err &&$phone_err &&$password_err &&$confirmpassword_err)==null){
+   if(($adm_no_err && $surname_err && $other_name_err && $gender_err && $age_err
+    && $DOB_err && $email_err && $course_err && $phone_err && $password_err && $confirmpassword_err)==null){
   $insertData="INSERT INTO stud_profile( `adm_no`, `surname`, `other_name`, `email`, `age`, `DOB`, `course`, `gender`, `image`, `phone`,`status`, `password`)
    VALUES ('$adm_no','$surname','$other_names','$email','$age','$DOB','$course','$gender','$new_image_name','$phone','complete','$password')";
+    // $insertDataStage1 = "INSERT INTO docs_collected (`adm_no`,`name`) VALUES (`$adm_no`,`$surname.' '.$other_names`)";
+    // mysqli_query($conn,$insertDataStage1);
 if($stmt = mysqli_prepare($conn, $insertData)){
     if(mysqli_stmt_execute($stmt)){
       // Redirect to signin page
+      echo'
+      <Script>
+      alert("Data submitted successfully and now pending Review");
+      </Script>
+      ';
        header("location: signin.php");
       // echo $adm_no, $surname,$other_names,$DOB,$age,$conn,$phone,$gender,$email,$new_image_name;
   } else{
       echo "Oops! Something went wrong. Please try again later.";
-      echo   $adm_no_err,$surname_err,$other_names_err,$gender_err ,$DOB_err ,$email_err ,$course_err ,$phone_err ,$password_err ,$confirmpassword_err,$errors;
+      
 
   }
 
@@ -179,7 +192,9 @@ if($stmt = mysqli_prepare($conn, $insertData)){
   mysqli_stmt_close($stmt);
 }
    }else{
-    
+    echo'<div class="bg-info">';
+    echo $adm_no_err,$surname_err, $other_names_err, $gender_err ,$DOB_err ,$age_err,$email_err ,$course_err ,$phone_err ,$password_err ,$confirmpassword_err;
+    echo '</div>';
    }
   }
 }
@@ -314,10 +329,10 @@ if($stmt = mysqli_prepare($conn, $insertData)){
                         </div>
                       </div>
                     </div>
-                    <p>Select an image less than 2MB with (.jpeg , .jpg, .png extension)</p>
+                    <p>Select an image less than 4MB with (.jpeg , .jpg, .png extension)</p>
                     <p><b>Profile Picture</b></p>
                     <div class="input-group mb-3">
-                      <input type="file" class="form-control" placeholder="Profile Picture"  required>
+                      <input type="file" class="form-control" name="image" placeholder="Profile Picture"  required>
                       <div class="input-group-append">
                         <div class="input-group-text">
                           <span class="fas fa-image"></span>

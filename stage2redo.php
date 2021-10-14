@@ -1,5 +1,34 @@
 <?php session_start();
 include('config.php');
+$adm_no=$_SESSION['admissionNumber'];
+if (!$conn ||mysqli_connect_errno()) {
+  echo("Connection failed: " . mysqli_connect_error());
+}else{
+  
+    
+  $_SESSION['admissionNumber']=$adm_no;
+   $sql = "SELECT * FROM stud_profile WHERE adm_no = '$adm_no'";
+    $result = mysqli_query($conn,$sql);
+    // $active = $row['active'];
+    while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+     
+     $surname = $row['surname'];
+      $admNo = $row['adm_no'];
+      $id= $row['id']; 
+    //  $name=$surname." ".$other_name;
+      $docStatus= $row['status']; 
+      // $docdateSubmitted= $row['date_submitted']; 
+    }
+
+}
+    //the name we can fetch from the stud_profile table
+    $GetNamesql= "SELECT * FROM stud_profile WHERE adm_no = '$adm_no' ";
+    $GetNameResult=mysqli_query($conn,$GetNamesql);
+    while($row1=mysqli_fetch_assoc($GetNameResult)){
+      $surname = $row1['surname'];
+      $other_name = $row1['other_name'];
+     
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +36,8 @@ include('config.php');
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Maseno | Stage 1</title>
+  <link rel="icon" href="img/Maseno-University-Logo.png" type="image/icon type">
+  <title>Maseno | Stage 2</title>
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -138,12 +168,12 @@ include('config.php');
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Stage 1: Documents Collection and Verification</h1>
+            <h1 class="m-0">Stage 2 : Student Profile</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="home.php">Home</a></li>
-              <li class="breadcrumb-item active">Stage 1 Records</li>
+              <li class="breadcrumb-item active">Stage 2 Records</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -155,7 +185,7 @@ include('config.php');
 <!-- Default box -->
 <div class="card">
   <div class="card-header">
-    <h3 class="card-title">Stage 1 - Document Collection & Verifctation</h3>
+    <h3 class="card-title">Stage 2 : <?php echo $surname." ".$other_name;?> Profile</h3>
 
     <div class="card-tools">
       <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -174,38 +204,145 @@ include('config.php');
 <!-- /.card -->
 
 <?php
- 
-$adm_no=$_SESSION['admissionNumber'];
-if (!$conn ||mysqli_connect_errno()) {
-  echo("Connection failed: " . mysqli_connect_error());
-}else{
-  
+$gender = $age =$DOB =$email=$birthyear =$course =$new_image_name=$phone =$password =$confirmpassword ="";
+ //dsplay errors
+ $gender_err  =$DOB_err =$email_err =$course_err =$phone_err =$password_err =$confirmpassword_err ="";
+ if(isset($_POST['submit'])){
+     //validate surname
+     //validate email
+   if(empty(trim($_POST['email']))){
+          $email_err= "Enter an  Email";
+          //if type is email it may validate itself
+   // }else if(filter_var($_POST['email']), FILTER_VALIDATE_EMAIL){
+   //   $email = $_POST['email'];
+     //if email is valid
+   }else{
+   //check if email already exists
+     // $email = trim($_POST['email']);
+    // Prepare a select statement
+    $sql = "SELECT id FROM stud_profile WHERE email = ?";
+    if($stmt=mysqli_prepare($conn,$sql)){
+      //binding variables to the prepared statement
+      mysqli_stmt_bind_param($stmt,"s",$param_email);
+      $param_email = trim($_POST['email']);
+     //  execute prepare statement
+      if(mysqli_stmt_execute($stmt)){
+       mysqli_stmt_store_result($stmt);//store the results
+       if(mysqli_stmt_num_rows($stmt)==1){
+         $adm_no_err = "Email user Already Exist.";
+       }else{
+         $email = trim($_POST['email']);
+       }
+      }
+      //close statement
+      mysqli_stmt_close($stmt);
+    }
+       //if email already exists
+       // echo "This email already exists! Sign in or use another email ";
+   
+   else{
+     $email=trim($_POST['email']);
+   }
+    }
+    if(empty($_POST['gender'] && $_POST['course'] && $_POST['DOB'])){
+      $gender_err = $course_err = $DOB_err ="Fill in all forms";
+    }else{
+     $gender=trim($_POST['gender']);
+     $course=trim($_POST['course']);
+     $DOB=trim($_POST['DOB']);
+    }
+    //get year to calculate year
+    $date = Date("Y");
+    $birth=explode("-",$DOB);
+    $birthyear=$birth[0];
+    $age=intval($date)-intval($birthyear);
+   
+    //validate phone number
+    if(empty($_POST['phone'])){
+      $phone_err="Enter Your Phone";
+ //    }else if(strlen(trim($_POST['phone'])) < 10 || strlen(trim($_POST['phone'])) > 13)
+ //    {
+ // $phone_err = "Enter Phone Number of valid Length";
+ //    }
+ }else{
+     $phone =$_POST['phone'];
     
-  $_SESSION['admissionNumber']=$adm_no;
-   $sql = "SELECT * FROM docs_collected WHERE adm_no = '$adm_no'";
-    $result = mysqli_query($conn,$sql);
-    // $active = $row['active'];
-    while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
-     
-      // $name = $row['name'];
-      $admNo = $row['adm_no'];
-      $id= $row['id']; 
-      $admLetter = $row['adm_letter'];
-      $kcseCert= $row['kcse_certificate'];
-      $birthCert= $row['id_birth_cert']; 
-      $docStatus= $row['status']; 
-      $docdateSubmitted= $row['date_submitted']; 
     }
+     // Validate password
+     if(empty(trim($_POST["password"]))){
+       $password_err = "Please enter a password.";     
+   } elseif(strlen(trim($_POST["password"])) < 6){
+       $password_err = "Password must have atleast 6 characters.";
+   } else{
+       // $password = trim($_POST["password"]);
+   
+   
+   // Validate confirm password
+   if(empty(trim($_POST["confirmpassword"]))){
+       $confirmpassword_err = "Please confirm password.";     
+   } else{
+       $confirmpassword = trim($_POST["confirmpassword"]);
+       if(empty($password_err) && ($password != $confirmpassword)){
+           $confirmpassword_err = "Password did not match.";
+            }else{
+                $password = trim($_POST["password"]);
+       }
+   }
+ }
+ 
+  //image file validation
+  $errors= array();
+  $file_name = $_FILES['image']['name'];
+  $file_size =$_FILES['image']['size'];
+  $file_tmp =$_FILES['image']['tmp_name'];
+  $file_type=$_FILES['image']['type'];
+ //  str_replace(" ","", $file_name
+ $file_ext = strtolower($file_name);
+ $file_ext=explode('.',$file_name);
+ $file_ext_end = end($file_ext);
+  $time = time();
+  $new_image_name = $time."_".$file_name;
+  $extensions= array("jpeg","jpg","png");
+  //check if image file is of  a valid  extension
+        if(in_array($file_ext,$extensions)=== false){
+          $errors[]="extension not allowed, please choose a JPEG or PNG file.";
+      }
+      
+      if($file_size > 5097152){
+          $errors[]='File size must less than  5MB';
+      }
+ 
+    if(empty($errors)==true){
+      $image_dir = "userimg";
+      //for session
+      $image_session = "$image_dir/$new_image_name";
+        move_uploaded_file($file_tmp,"$image_dir/$new_image_name");
+    }
+   
+    //push data into database
+    if(($gender_err &&$age_err
+     &&$DOB_err &&$email_err &&$course_err &&$phone_err &&$password_err &&$confirmpassword_err)===null){
+   $insertData="UPDATE stud_profile SET `email`='$email',`age`='$age',`DOB`='$DOB',`course`='$course',`gender`='$gender',`image`='$new_image_name',`status`='complete',`phone`='$phone',`password`=`$password` WHERE `adm_no`=`$adm_no`";
+ if($stmt = mysqli_prepare($conn, $insertData)){
+     if(mysqli_stmt_execute($stmt)){
+       // Redirect to signin page
+        header("location: student.php");
+       // echo $adm_no, $surname,$other_names,$DOB,$age,$conn,$phone,$gender,$email,$new_image_name;
+   } else{
+       echo "Oops! Something went wrong. Please try again later.";
+       echo  '$gender_err ,$DOB_err ,$email_err ,$course_err ,$phone_err ,$password_err ,$confirmpassword_err,$errors';
+ 
+   }
+ 
+   // Close statement
+   mysqli_stmt_close($stmt);
+ }
+    }else{
+     
+    }
+   }
+ 
 
-}
-    //the name we can fetch from the stud_profile table
-    $GetNamesql= "SELECT * FROM stud_profile WHERE adm_no = '$adm_no' ";
-    $GetNameResult=mysqli_query($conn,$GetNamesql);
-    while($row1=mysqli_fetch_assoc($GetNameResult)){
-      $surname = $row1['surname'];
-      $other_name = $row1['other_name'];
-     
-    }
 ?>
    
 
@@ -221,11 +358,11 @@ if (!$conn ||mysqli_connect_errno()) {
             <!-- jquery validation -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Documents Collection and Verification</small></h3>
+                <h3 class="card-title">Student Profile Resubmission and Verification</small></h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form id="quickForm" method="POST" action="stage1redo.php"  enctype="multipart/form-data">
+              <form id="quickForm" method="POST" action="stage2redo.php"  enctype="multipart/form-data">
               <div class="card-body">
               <div class="form-group">
                     <label for="profile" >Admission Number </label>
@@ -240,11 +377,7 @@ if (!$conn ||mysqli_connect_errno()) {
                       <input type="text" class="form-control " id="other_name" name="other_name" select disabled value="<?php echo $other_name;?>"/>
                   </div> 
               <div class="card-body">
-              <p>Select a document less than 4MB with (.pdf  extension)</p>
-                  <div class="form-group">
-                    <label for="profile" >Profile Picture</label>
-                      <input type="file" class="form-control " id="image" name="image"/>
-                  </div>
+          
                   
                   <div class="input-group mb-3">
                         <section class="row">
@@ -300,10 +433,10 @@ if (!$conn ||mysqli_connect_errno()) {
                         </div>
                       </div>
                     </div>
-                    <p>Select an image less than 2MB with (.jpeg , .jpg, .png extension)</p>
+                    <p>Select an image less than 4MB with (.jpeg , .jpg, .png extension)</p>
                     <p><b>Profile Picture</b></p>
                     <div class="input-group mb-3">
-                      <input type="file" class="form-control" placeholder="Profile Picture"  required>
+                      <input type="file" class="form-control" placeholder="Profile Picture" name="image"  required>
                       <div class="input-group-append">
                         <div class="input-group-text">
                           <span class="fas fa-image"></span>
@@ -344,118 +477,8 @@ if (!$conn ||mysqli_connect_errno()) {
             </div>
             <!-- /.card -->
             </div>
-      <!-- FOrm action PHP -->
-      <?php
-      if(isset($_POST['resubmit'])){
-      // $id = $_POST['id'];
-      $studentName = $surname." ". $other_name;
-      $studentadmNo = $adm_no;
-      $errors= array();
-      $time = time();
-
-      //adm letter
-            $adm_letter_name = $_FILES['admLetter']['name'];
-            $adm_letter_size =$_FILES['admLetter']['size'];
-            $adm_letter_tmp =$_FILES['admLetter']['tmp_name'];
-            $adm_letter_type=$_FILES['admLetter']['type'];
-             $adm_letter_ext=strtolower(end(explode('.',$_FILES['admLetter']['name'])));
-            $adm_letter_image_name = $time."_".$adm_letter_name;
-
-      //kcse cert
-            $kcseCert_name = $_FILES['kcseCert']['name'];
-            $kcseCert_size =$_FILES['kcseCert']['size'];
-            $kcseCert_tmp =$_FILES['kcseCert']['tmp_name'];
-            $kcseCert_type=$_FILES['kcseCert']['type'];
-             $kcseCert_ext=strtolower(end(explode('.',$_FILES['kcseCert']['name'])));
-            $kcseCert_image_name = $time."_".$kcseCert_name;
-
-      //birth cert
-            $birthCert_name = $_FILES['birthCert']['name'];
-            $birthCert_size =$_FILES['birthCert']['size'];
-            $birthCert_tmp =$_FILES['birthCert']['tmp_name'];
-            $birthCert_type=$_FILES['birthCert']['type'];
-            $birthCert_ext=strtolower(end(explode('.',$_FILES['birthCert']['name'])));
-            $birthCert_image_name = $time."_".$birthCert_name;
-
-
-          $time = time();
-          $extensions= array("pdf");
-       
-              //file size test
-              if(($adm_letter_size > 4097152) || ($birthCert_size > 4097152) || ($kcseCert_size > 4097152)){
-                  $errors[]='File size must be less than or equal to  4 MB';
-                  $_SESSION['msg2']="File size must be less than or equal to  4 MB'.";
-                  //file extension test
-              }else if(in_array($birthCert_ext,$extensions)=== false){
-                $errors[]=" File extension not allowed, please choose a pdf file.";
-            }else if(in_array($adm_letter_ext,$extensions)===false){
-              $errors[]=" File extension not allowed, please choose a pdf file.";
-            }
-            else if(in_array($kcseCert_ext,$extensions)===false){
-              $errors[]=" File extension not allowed, please choose a pdf file.";
-            }
-        //empty file test
-            if(empty($errors)==true){
-                $image_dir = "studDocuments";
-                //for session
-                $admLetter_session = "$image_dir/$adm_letter_image_name";
-                move_uploaded_file($adm_letter_tmp,"$image_dir/$adm_letter_image_name");
-
-                $kcseCert_session = "$image_dir/$kcseCert_image_name";
-                move_uploaded_file($kcseCert_tmp,"$image_dir/$kcseCert_image_name");
-
-                $birthCert_session = "$image_dir/$birthCert_image_name";
-                move_uploaded_file($birthCert_tmp,"$image_dir/$birthCert_image_name");
-
-                $date = date("l jS \of F Y h:i:s A");
-              //check if a record exists and if there is just do an update  rather than an insertion query
-
-              $recordsql = "SELECT id FROM docs_collected WHERE adm_no='$adm_no'";
-              $recordresult = mysqli_query($conn,$recordsql);
-              // $resultrow = mysqli_fetch_assoc($recordresult);
-              // $recordadmno = $resultrow['adm_no'];
-              if(mysqli_num_rows($recordresult)==1){
-                $sql= "UPDATE docs_collected SET adm_no='$studentadmNo',name='$studentName',adm_letter='$adm_letter_image_name',kcse_certificate='$kcseCert_image_name',id_birth_cert='$birthCert_image_name',status = 'complete',
-              date_submitted='$date' WHERE adm_no = '$adm_no'";
-              }
-              // $count = mysqli_num_rows($recordresult);
-              // if ($count > 1) {
-                
-              } else if($count = 0){
-               $sql ="INSERT INTO docs_collected( adm_no, name, adm_letter, kcse_certificate, id_birth_cert, status, date_submitted) 
-                      VALUES ('$studentadmNo','$studentName','$adm_letter_image_name','$kcseCert_image_name','$birthCert_image_name','complete','$date')";
-                        }
-                
-                      
-                    
-                        if ($conn->query($sql) === TRUE) {
-                      echo'
-                      <Script>
-                      alert("Data submitted successfully and now pending Review");
-                      </Script>
-                      ';
-
-                        } else {
-                          echo "Error: " . $sql . "<br>" . $conn->error;
-                        }
-                        
-                        $conn->close();
-                     
-            }else{
-                
-              //   echo'
-              //   <div class="alert">
-              //  <?print_r( $errors) 
-
-              //   </div>
-              //   <Script>
-              //   alert("No Data Submitted");
-              //   </Script>
-              //   ';
-              
-             }
-           
-                     ?>
+      
+     
             <div class="col-md-2"></div>
           
           </div>

@@ -1,13 +1,12 @@
 <?php
+// Initialize the session
 session_start();
-<<<<<<< HEAD
-=======
-// Check if the user is already logged in, if yes then redirect to student page
-// if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-//   header("location: student.php");
-//   exit;
-// }
->>>>>>> be9acfd (conditions for student page display AJAX search)
+ 
+// Check if the user is already logged in, if yes then redirect him to student page
+if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+    header("location: student.php");
+    exit;
+}
 include("config.php");
 $adm_no=$password="";
 if(isset($_POST['submit'])){
@@ -17,29 +16,6 @@ if(isset($_POST['submit'])){
   $res = mysqli_query($conn,$query) or die(mysqli_error($conn));
   $row = mysqli_num_rows($res);
    if($row == 1){
-<<<<<<< HEAD
-    // $_SESSION['adm_no'] = $adm_no;
-    $sessionStater=mysqli_fetch_assoc($res);
-    $_SESSION['stud_id'] = $sessionStater['id'];
-
-    $_SESSION['admissionNumber'] = $sessionStater['adm_no'];
-    $_SESSION['other_name'] = $sessionStater['other_name'];
-    $_SESSION['surname'] = $sessionStater['surname'];
-    $_SESSION['age'] = $sessionStater['age'];
-    $_SESSION['DOB'] = $sessionStater['DOB'];
-    $_SESSION['phone'] = $sessionStater['phone'];
-    $_SESSION['email'] = $sessionStater['email'];
-    $_SESSION['course'] = $sessionStater['course'];
-    $_SESSION['image'] = $sessionStater['image'];
-    $_SESSION['gender'] = $sessionStater['gender'];
-    $_SESSION['status'] = $sessionStater['status'];
-    //redirect to student page
-    header("Location:student.php");
-  }else{
-    echo "invalid Login Details.";
-  }
-}
-=======
     $sessionStater=mysqli_fetch_assoc($res);
     
                             
@@ -66,7 +42,6 @@ if(isset($_POST['submit'])){
     echo "invalid Login Details.";
   }
  }
->>>>>>> be9acfd (conditions for student page display AJAX search)
 
 ?><!doctype html>
 <html lang="en">
@@ -127,7 +102,7 @@ if(isset($_POST['submit'])){
       </label>
     </div>
     <button class="w-100 btn btn-lg btn-primary" name="submit" type="submit">Sign in</button>
-    <!-- <p class="mt-5 mb-3 text-muted">Not Registered Yet?<a href="signup.php">Register Here</a></p> -->
+     <p class="mt-5 mb-3 text-muted">Not Registered Yet?<a href="signup.php">Register Here</a></p> 
     
     
     <p class="mt-5 mb-3 text-muted">&copy; 2001–2021 Maseno University.<a href="adminsignin.php">Administrator Log In</a></p>

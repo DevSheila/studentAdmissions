@@ -1,11 +1,103 @@
-<?php session_start();
+<?php
+ session_start();
 include('config.php');
+$adm_no = $_SESSION['admissionNumber'];
+$sql ="SELECT * FROM stud_profile WHERE adm_no = '$adm_no'";
+$result= mysqli_query($conn,$sql);
+while($row= mysqli_fetch_assoc($result)){
+  $surname = $row['surname'];
+  $other_name = $row['other_name'];
+  $image = $row['image'];
+  $name = $surname." ".$other_name;
+}
+if(isset($_POST['resubmit'])){
+  // $id = $_POST['id'];
+  // $studentName = $surname." ". $other_name;
+  $studentadmNo = $adm_no;
+  $errors= array();
+  $time = time();
+
+  //adm letter
+        $adm_letter_name = $_FILES['admLetter']['name'];
+        $adm_letter_size =$_FILES['admLetter']['size'];
+        $adm_letter_tmp =$_FILES['admLetter']['tmp_name'];
+        $adm_letter_type=$_FILES['admLetter']['type'];
+        $adm_letter_ext = strtolower($adm_letter_name);
+        $adm_letter_ext=explode('.',$adm_letter_name);
+        $adm_letter_ext_end = end($adm_letter_ext);
+        $adm_letter_image_name = $time."_".$adm_letter_name;
+
+  //kcse cert
+        $kcseCert_name = $_FILES['kcseCert']['name'];
+        $kcseCert_size =$_FILES['kcseCert']['size'];
+        $kcseCert_tmp =$_FILES['kcseCert']['tmp_name'];
+        $kcseCert_type=$_FILES['kcseCert']['type'];
+        $kcseCert_ext = strtolower($kcseCert_name);
+        $kcseCert_ext=explode('.',$kcseCert_name);
+        $kcseCert_ext_end = end($kcseCert_ext);
+        $kcseCert_image_name = $time."_".$kcseCert_name;
+
+  //birth cert
+        $birthCert_name = $_FILES['birthCert']['name'];
+        $birthCert_size =$_FILES['birthCert']['size'];
+        $birthCert_tmp =$_FILES['birthCert']['tmp_name'];
+        $birthCert_type=$_FILES['birthCert']['type'];
+        $birthCert_ext = strtolower($birthCert_name);
+        $birthCert_ext=explode('.',$birthCert_name);
+        $birthCert_ext_end = end($birthCert_ext);
+        $birthCert_image_name = $time."_".$birthCert_name;
+
+
+      $time = time();
+      $extensions= array("pdf");
+
+          //file size test
+          if(($adm_letter_size > 4097152) || ($birthCert_size > 4097152) || ($kcseCert_size > 4097152)){
+              $errors[]='File size must be less than or equal to  4 MB';
+              $_SESSION['msg2']="File size must be less than or equal to  4 MB'.";
+              //file extension test
+          }else if(in_array($birthCert_ext,$extensions)=== false){
+            $errors[]=" File extension not allowed, please choose a pdf file.";
+        }else if(in_array($adm_letter_ext,$extensions)===false){
+          $errors[]=" File extension not allowed, please choose a pdf file.";
+        }
+        else if(in_array($kcseCert_ext,$extensions)===false){
+          $errors[]=" File extension not allowed, please choose a pdf file.";
+        }
+    //empty file test
+        if(empty($errors)==true){
+            $image_dir = "studDocuments";
+            //for session
+            $admLetter_session = "$image_dir/$adm_letter_image_name";
+            move_uploaded_file($adm_letter_tmp,"$image_dir/$adm_letter_image_name");
+
+            $kcseCert_session = "$image_dir/$kcseCert_image_name";
+            move_uploaded_file($kcseCert_tmp,"$image_dir/$kcseCert_image_name");
+
+            $birthCert_session = "$image_dir/$birthCert_image_name";
+            move_uploaded_file($birthCert_tmp,"$image_dir/$birthCert_image_name");
+
+            
+        }
+        $date = date("l jS \of F Y h:i:s A");
+          // if (count($errors) < 1) {
+          $insertsql="INSERT INTO docs_collected(`adm_no`, `name`, `adm_letter`, `kcse_certificate`, `id_birth_cert`, `status`, `date_submitted`) VALUES ('$adm_no','$name','$adm_letter_image_name','$kcseCert_image_name','$birthCert_image_name','complete','$date')";
+          echo'
+      <Script>
+      alert("Data submitted successfully and now pending Review");
+      </Script>
+      ';
+       header("location: student.php");
+          $res = mysqli_query($conn,$insertsql);
+          mysqli_close($conn);
+        }
+     // }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Maseno | Stage 1</title>
   <!-- Google Font: Source Sans Pro -->
@@ -44,7 +136,7 @@ include('config.php');
 
   <!-- Preloader -->
    <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="img/Maseno-University-Logo.png" alt="MasenoELogo" height="60" width="60">
+    <!-- <img class="animation__shake" src="img/Maseno-University-Logo.png" alt="MasenoELogo" height="60" width="60"> -->
   </div>
 
   <!-- Navbar -->
@@ -57,7 +149,7 @@ include('config.php');
       <li class="nav-item d-none d-sm-inline-block">
         <a href="student.php" class="nav-link">Home</a>
       </li>
-   
+
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -75,14 +167,14 @@ include('config.php');
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src=img/woman.jpg class="img-circle elevation-2" alt="User Image">
+          <img src="<?php echo "userimg/".$image; ?>" style="height: 50px; width: 50px; border-radius: 50%;">
         </div>
         <div class="info">
-      
+
               <h5 style="color:white;"> 
                     <?php
+                      echo $adm_no;
 
-            
                     ?>
               </h5>
         </div>
@@ -120,7 +212,7 @@ include('config.php');
                   <p>Home</p>
                 </a>
               </li>
-            
+
             </ul>
           </li>
 
@@ -167,56 +259,57 @@ include('config.php');
     </div>
   </div>
   <div class="card-body p-0">
-         
+
 
   <!-- /.card-body -->
 </div>
 <!-- /.card -->
 
 <?php
- 
-$adm_no=$_SESSION['admissionNumber'];
-if (!$conn ||mysqli_connect_errno()) {
-  echo("Connection failed: " . mysqli_connect_error());
-}else{
-  
-    
-  $_SESSION['admissionNumber']=$adm_no;
-   $sql = "SELECT * FROM docs_collected WHERE adm_no = '$adm_no'";
-    $result = mysqli_query($conn,$sql);
-    // $active = $row['active'];
-    while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
-     
-      // $name = $row['name'];
-      $admNo = $row['adm_no'];
-      $id= $row['id']; 
-      $admLetter = $row['adm_letter'];
-      $kcseCert= $row['kcse_certificate'];
-      $birthCert= $row['id_birth_cert']; 
-      $docStatus= $row['status']; 
-      $docdateSubmitted= $row['date_submitted']; 
-    }
 
-}
-    //the name we can fetch from the stud_profile table
-    $GetNamesql= "SELECT * FROM stud_profile WHERE adm_no = '$adm_no' ";
-    $GetNameResult=mysqli_query($conn,$GetNamesql);
-    while($row1=mysqli_fetch_assoc($GetNameResult)){
-      $surname = $row1['surname'];
-      $other_name = $row1['other_name'];
-     
-    }
+// $adm_no=$_SESSION['admissionNumber'];
+// $_SESSION['admissionNumber']=$adm_no;
+//    $sql = "SELECT * FROM `docs_collected` WHERE adm_no ='$adm_no'";
+//     $result = mysqli_query($conn,$sql);
+//     // $active = $row['active'];
+//     while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+
+//       // $name = $row['name'];
+//       $admNo = $row['adm_no'];
+//       $id= $row['id']; 
+//       $admLetter = $row['adm_letter'];
+//       $kcseCert= $row['kcse_certificate'];
+//       $birthCert= $row['id_birth_cert']; 
+//       $docStatus= $row['status']; 
+//       $docdateSubmitted= $row['date_submitted']; 
+//     }
+// if (!$conn ||mysqli_connect_errno()) {
+//   echo("Connection failed: " . mysqli_connect_error());
+// }else{
+
+
+  
+
+// }
+//     //the name we can fetch from the stud_profile table
+//     $GetNamesql= "SELECT * FROM stud_profile WHERE adm_no = '$adm_no' ";
+//     $GetNameResult=mysqli_query($conn,$GetNamesql);
+//     while($row1=mysqli_fetch_assoc($GetNameResult)){
+//       $surname = $row1['surname'];
+//       $other_name = $row1['other_name'];
+
+//     }
 ?>
-   
+
 
 </section>
 <!-- Main content -->
 <section class="content">
       <div class="container-fluid">
-         
+
         <div class="row">
         <div class="col-md-2"></div>
-      
+
           <div class="col-md-8">
             <!-- jquery validation -->
             <div class="card card-primary">
@@ -225,7 +318,7 @@ if (!$conn ||mysqli_connect_errno()) {
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form id="quickForm" method="POST" action="stage1redo.php"  enctype="multipart/form-data">
+              <form id="quickForm" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"  enctype="multipart/form-data">
               <div class="card-body">
               <div class="form-group">
                     <label for="profile" >Admission Number </label>
@@ -255,7 +348,7 @@ if (!$conn ||mysqli_connect_errno()) {
                       <input type="file" class="form-control " id="bithCert" name="birthCert"/>
                   </div>
 
-               
+
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
@@ -267,118 +360,58 @@ if (!$conn ||mysqli_connect_errno()) {
             </div>
       <!-- FOrm action PHP -->
       <?php
-      if(isset($_POST['resubmit'])){
-      // $id = $_POST['id'];
-      $studentName = $surname." ". $other_name;
-      $studentadmNo = $adm_no;
-      $errors= array();
-      $time = time();
-
-      //adm letter
-            $adm_letter_name = $_FILES['admLetter']['name'];
-            $adm_letter_size =$_FILES['admLetter']['size'];
-            $adm_letter_tmp =$_FILES['admLetter']['tmp_name'];
-            $adm_letter_type=$_FILES['admLetter']['type'];
-             $adm_letter_ext=strtolower(end(explode('.',$_FILES['admLetter']['name'])));
-            $adm_letter_image_name = $time."_".$adm_letter_name;
-
-      //kcse cert
-            $kcseCert_name = $_FILES['kcseCert']['name'];
-            $kcseCert_size =$_FILES['kcseCert']['size'];
-            $kcseCert_tmp =$_FILES['kcseCert']['tmp_name'];
-            $kcseCert_type=$_FILES['kcseCert']['type'];
-             $kcseCert_ext=strtolower(end(explode('.',$_FILES['kcseCert']['name'])));
-            $kcseCert_image_name = $time."_".$kcseCert_name;
-
-      //birth cert
-            $birthCert_name = $_FILES['birthCert']['name'];
-            $birthCert_size =$_FILES['birthCert']['size'];
-            $birthCert_tmp =$_FILES['birthCert']['tmp_name'];
-            $birthCert_type=$_FILES['birthCert']['type'];
-            $birthCert_ext=strtolower(end(explode('.',$_FILES['birthCert']['name'])));
-            $birthCert_image_name = $time."_".$birthCert_name;
-
-
-          $time = time();
-          $extensions= array("pdf");
-       
-              //file size test
-              if(($adm_letter_size > 4097152) || ($birthCert_size > 4097152) || ($kcseCert_size > 4097152)){
-                  $errors[]='File size must be less than or equal to  4 MB';
-                  $_SESSION['msg2']="File size must be less than or equal to  4 MB'.";
-                  //file extension test
-              }else if(in_array($birthCert_ext,$extensions)=== false){
-                $errors[]=" File extension not allowed, please choose a pdf file.";
-            }else if(in_array($adm_letter_ext,$extensions)===false){
-              $errors[]=" File extension not allowed, please choose a pdf file.";
-            }
-            else if(in_array($kcseCert_ext,$extensions)===false){
-              $errors[]=" File extension not allowed, please choose a pdf file.";
-            }
-        //empty file test
-            if(empty($errors)==true){
-                $image_dir = "studDocuments";
-                //for session
-                $admLetter_session = "$image_dir/$adm_letter_image_name";
-                move_uploaded_file($adm_letter_tmp,"$image_dir/$adm_letter_image_name");
-
-                $kcseCert_session = "$image_dir/$kcseCert_image_name";
-                move_uploaded_file($kcseCert_tmp,"$image_dir/$kcseCert_image_name");
-
-                $birthCert_session = "$image_dir/$birthCert_image_name";
-                move_uploaded_file($birthCert_tmp,"$image_dir/$birthCert_image_name");
-
-                $date = date("l jS \of F Y h:i:s A");
+     
               //check if a record exists and if there is just do an update  rather than an insertion query
+                      //error occurs here ,,,,at least the admission number has to exist in docs_collected 
+            //   $recordsql = "SELECT id FROM docs_collected WHERE adm_no='$adm_no'";
+            //   $recordresult = mysqli_query($conn,$recordsql);
+            //   // $resultrow = mysqli_fetch_assoc($recordresult);
+            //   // $recordadmno = $resultrow['adm_no'];
+            //   if(mysqli_num_rows($recordresult)==1){
+            //     $sql= "UPDATE docs_collected SET adm_no='$studentadmNo',name='$studentName',adm_letter='$adm_letter_image_name',kcse_certificate='$kcseCert_image_name',id_birth_cert='$birthCert_image_name',status = 'complete',
+            //   date_submitted='$date' WHERE adm_no = '$adm_no'";
+            //   }
+            //   // $count = mysqli_num_rows($recordresult);
+            //   // if ($count > 1) {
 
-              $recordsql = "SELECT id FROM docs_collected WHERE adm_no='$adm_no'";
-              $recordresult = mysqli_query($conn,$recordsql);
-              // $resultrow = mysqli_fetch_assoc($recordresult);
-              // $recordadmno = $resultrow['adm_no'];
-              if(mysqli_num_rows($recordresult)==1){
-                $sql= "UPDATE docs_collected SET adm_no='$studentadmNo',name='$studentName',adm_letter='$adm_letter_image_name',kcse_certificate='$kcseCert_image_name',id_birth_cert='$birthCert_image_name',status = 'complete',
-              date_submitted='$date' WHERE adm_no = '$adm_no'";
-              }
-              // $count = mysqli_num_rows($recordresult);
-              // if ($count > 1) {
-                
-              } else if($count = 0){
-               $sql ="INSERT INTO docs_collected( adm_no, name, adm_letter, kcse_certificate, id_birth_cert, status, date_submitted) 
-                      VALUES ('$studentadmNo','$studentName','$adm_letter_image_name','$kcseCert_image_name','$birthCert_image_name','complete','$date')";
-                        }
-                
-                      
-                    
-                        if ($conn->query($sql) === TRUE) {
-                      echo'
-                      <Script>
-                      alert("Data submitted successfully and now pending Review");
-                      </Script>
-                      ';
+            //   }
+            //    if($count = 0){
+            //    $sql ="INSERT INTO docs_collected( adm_no, name, adm_letter, kcse_certificate, id_birth_cert, status, date_submitted) 
+            //           VALUES ('$studentadmNo','$studentName','$adm_letter_image_name','$kcseCert_image_name','$birthCert_image_name','complete','$date')";
+            //             }
 
-                        } else {
-                          echo "Error: " . $sql . "<br>" . $conn->error;
-                        }
-                        
-                        $conn->close();
-                     
-            }else{
-                
-              //   echo'
-              //   <div class="alert">
-              //  <?print_r( $errors) 
 
-              //   </div>
-              //   <Script>
-              //   alert("No Data Submitted");
-              //   </Script>
-              //   ';
-              
-             }
-           
+
+            //             if ($conn->query($sql) === TRUE) {
+            //           echo'
+            //           <Script>
+            //           alert("Data submitted successfully and now pending Review");
+            //           </Script>
+            //           ';
+
+            //             } else {
+            //               echo "Error: " . $sql . "<br>" . $conn->error;
+            //             }
+
+            //             $conn->close();
+
+            // }else{
+
+            //   //   echo'
+            //   //   <div class="alert">
+            //   //  <?print_r( $errors) 
+
+            //   //   </div>
+            //   //   <Script>
+            //   //   alert("No Data Submitted");
+            //   //   </Script>
+            //   //   ';
+
+            
+         
                      ?>
             <div class="col-md-2"></div>
-          
+
           </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -430,5 +463,3 @@ if (!$conn ||mysqli_connect_errno()) {
 <script src="dist/js/pages/dashboard.js"></script>
 </body>
 </html>
-
-

@@ -3,11 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-<<<<<<< HEAD
-  <title>AdminLTE 3 | Dashboard</title>
-=======
   <title>Student Portal </title>
->>>>>>> be9acfd (conditions for student page display AJAX search)
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -42,11 +38,7 @@
 
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
-<<<<<<< HEAD
-    <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-=======
     <img class="animation__shake" src="img/Maseno-University-Logo.png" alt="AdminLTELogo" height="60" width="60">
->>>>>>> be9acfd (conditions for student page display AJAX search)
   </div>
 
   <!-- Navbar -->
@@ -57,11 +49,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-<<<<<<< HEAD
-        <a href="home.php" class="nav-link">Home</a>
-=======
         <a href="student.php" class="nav-link">Home</a>
->>>>>>> be9acfd (conditions for student page display AJAX search)
       </li>
    
     </ul>
@@ -74,11 +62,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
-<<<<<<< HEAD
-      <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-=======
       <img src="img/Maseno-University-Logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
->>>>>>> be9acfd (conditions for student page display AJAX search)
       <span class="brand-text font-weight-light">ADMISSIONS</span>
     </a>
 
@@ -140,12 +124,6 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1 class="m-0">Stage 1</h1>
-<<<<<<< HEAD
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-=======
           </div>
        
           <!-- /.col -->
@@ -153,7 +131,6 @@
             
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="student.php">Home</a></li>
->>>>>>> be9acfd (conditions for student page display AJAX search)
               <li class="breadcrumb-item active">Stage 1</li>
             </ol>
           </div><!-- /.col -->
@@ -164,32 +141,13 @@
 
     <?php
     include("config.php");
-<<<<<<< HEAD
-
-    $_SESSION['name']="Russel Osiemo";
-    $_SESSION['admNo']="CCS/00209/019";
-    $_SESSION['admin']="admin";
-=======
-    $surname = $_SESSION['surname'];
-    $other_name = $_SESSION['other_name'];
-    $name=$surname." ".$other_name;
-    $adm_no=$_SESSION['admissionNumber'];
-    // $_SESSION['admin']=$adm_no;
->>>>>>> be9acfd (conditions for student page display AJAX search)
-
-
-    
-    // Check connection
+ // Check connection
     if (!$conn ||mysqli_connect_errno()) {
       echo("Connection failed: " . mysqli_connect_error());
     }else{
       
         
-<<<<<<< HEAD
-       $adm_no= $_SESSION['admNo'];
-=======
-      $_SESSION['admissionNumber']=$adm_no;
->>>>>>> be9acfd (conditions for student page display AJAX search)
+      $adm_no = $_SESSION['admissionNumber'];
     
     
         
@@ -202,10 +160,7 @@
       
       if($count > 0) {
         // If there's a record of current student
-<<<<<<< HEAD
-=======
         
->>>>>>> be9acfd (conditions for student page display AJAX search)
           ?>
           <div class="container">
             <div class="row">
@@ -222,12 +177,9 @@
            $birthCert= $row['id_birth_cert']; 
            $docStatus= $row['status']; 
            $docdateSubmitted= $row['date_submitted']; 
-<<<<<<< HEAD
-=======
          }
         }
       }
->>>>>>> be9acfd (conditions for student page display AJAX search)
            ?>
            
 
@@ -278,26 +230,7 @@
                 
                 <p class="text-muted"><?php echo $docStatus; ?></p>
 
-  
-          
               </div>
-<<<<<<< HEAD
-              <!-- /.card-body -->
-            </div>
-          </div>
-          <?php
-         }
-
-         ?>
-     
-         </div>
-          </div>
-       <?php
-         
-    
-        }else{
-        ?>
-=======
               <center>
     <div>
               <p class="badge-dark">This stage has been approved , 
@@ -313,63 +246,6 @@
          </div>
           </div>
     
->>>>>>> be9acfd (conditions for student page display AJAX search)
-<!-- Main content -->
-<section class="content">
-      <div class="container-fluid">
-        <div class="row">
-        <div class="col-md-2"></div>
-      
-<<<<<<< HEAD
-          <div class="col-md-8">
-            <!-- jquery validation -->
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">Documents Collection and Verification</small></h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <form id="quickForm" method="POST" action="bsStage1.php"  enctype="multipart/form-data">
-                <div class="card-body">
-                <p>Select a document less than 4MB with (.pdf , .txt extension)</p>
-                  <div class="form-group">
-                    <label for="profile" >ADMISSION LETTER </label>
-                      <input type="file" class="form-control " id="admLetter" name="admLetter"/>
-                  </div>
-                  <div class="form-group">
-                    <label for="profile" >KCSE CERTIFICATE / RESULT SLIP</label>
-                      <input type="file" class="form-control " id="kcseCert" name="kcseCert"/>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="profile" >ID/BIRTH CERTIFICATE</label>
-                      <input type="file" class="form-control " id="bithCert" name="birthCert"/>
-                  </div>
-
-               
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-              </form>
-            </div>
-            <!-- /.card -->
-            </div>
-      
-=======
-         
->>>>>>> be9acfd (conditions for student page display AJAX search)
-            <div class="col-md-2"></div>
-          
-          </div>
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </section>
-<<<<<<< HEAD
-=======
-  
->>>>>>> be9acfd (conditions for student page display AJAX search)
     <!-- /.content -->
 
   <!-- Control Sidebar -->
@@ -379,16 +255,6 @@
   <!-- /.control-sidebar -->
 
 
-<<<<<<< HEAD
-        <?php
-        }
-     
-    }
-    ?>
-
-
-=======
->>>>>>> be9acfd (conditions for student page display AJAX search)
  </div>
 <!-- ./wrapper -->
 
